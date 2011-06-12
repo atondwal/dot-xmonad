@@ -85,7 +85,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm,               xK_semicolon), spawn $ XMonad.terminal conf)
 
     -- launch gmrun
-    , ((modm,               xK_colon ), spawn "gmrun")
+    , ((modm,               xK_r     ), spawn "gmrun")
 
     -- close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
@@ -97,7 +97,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
 
     -- Resize viewed windows to the correct size
-    , ((modm,               xK_r     ), refresh)
+    , ((modm .|. shiftMask, xK_r     ), refresh)
 
     -- Move focus to the next/previous window
     , ((modm,               xK_Tab   ), windows W.focusDown)
@@ -152,7 +152,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
 
     -- Restart xmonad
-    , ((modm .|. shiftMask, xK_r     ), spawn "xmonad --recompile; xmonad --restart")
+    , ((modm .|. controlMask, xK_r   ), spawn "xmonad --recompile; xmonad --restart")
     ]
     ++
 
