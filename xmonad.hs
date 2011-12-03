@@ -12,7 +12,7 @@ import Data.Monoid
 import System.Exit
 
 import XMonad.Hooks.DynamicLog
-import System.IO
+import XMonad.Hooks.ManageHelpers
 
 import XMonad.Layout.Master
 import XMonad.Layout.WindowNavigation
@@ -221,10 +221,18 @@ myLayout = tiled ||| masteredGrid ||| grid ||| Full
 -- 'className' and 'resource' are used below.
 --
 myManageHook = composeAll
-    [ className =? "MPlayer"        --> doFloat
+    [ resource  =? "desktop_window" --> doIgnore
+    , resource  =? "kdesktop"       --> doIgnore
+    , className =? "MPlayer"        --> doFloat
+    , className =? "Gnome-mplayer"  --> doFloat
     , className =? "Gimp"           --> doFloat
-    , resource  =? "desktop_window" --> doIgnore
-    , resource  =? "kdesktop"       --> doIgnore ]
+    , className =? "Audacious"      --> doFloat
+    , className =? "Pidgin"         --> doFloat
+    , className =? "Skype"          --> doFloat
+    , (className =? "Firefox" <&&> resource =? "Places") --> doFloat
+    , (className =? "Firefox" <&&> resource =? "Dialog") --> doCenterFloat
+    , isDialog                      --> doCenterFloat
+    ]
 
 ------------------------------------------------------------------------
 -- Event handling
