@@ -20,6 +20,9 @@ import XMonad.Layout.Grid
 import XMonad.Layout.Minimize
 import XMonad.Layout.LayoutModifier
 
+import XMonad.Prompt
+import XMonad.Prompt.Shell
+
 import qualified XMonad.Actions.FlexibleManipulate as Flex
 
 import qualified XMonad.StackSet as W
@@ -69,8 +72,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- launch a terminal
     [ ((modm,               xK_semicolon), spawn $ XMonad.terminal conf)
 
-    -- launch gmrun
-    , ((modm,               xK_r     ), spawn "gmrun")
+    -- Open the shell prompt
+    , ((modm,               xK_r     ), shellPrompt defaultXPConfig)
 
     -- close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
