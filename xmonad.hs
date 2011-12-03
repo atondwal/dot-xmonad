@@ -45,21 +45,6 @@ myBorderWidth   = 2
 --
 myModMask       = mod1Mask
 
--- The mask for the numlock key. Numlock status is "masked" from the
--- current modifier status, so the keybindings will work with numlock on or
--- off. You may need to change this on some systems.
---
--- You can find the numlock modifier by running "xmodmap" and looking for a
--- modifier with Num_Lock bound to it:
---
--- > $ xmodmap | grep Num
--- > mod2        Num_Lock (0x4d)
---
--- Set numlockMask = 0 if you don't have a numlock key, or want to treat
--- numlock status separately.
---
-myNumlockMask   = mod2Mask
-
 -- The default number of workspaces (virtual screens) and their names.
 -- By default we use numeric strings, but any string may be used as a
 -- workspace name. The number of workspaces is determined by the length
@@ -139,7 +124,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_period), sendMessage (IncMasterN (-1)))
 
     -- Minimize/Restore
-    , ((modm,               xK_m     ), withFocused (\f -> sendMessage (MinimizeWin f)))
+    , ((modm,               xK_m     ), withFocused minimizeWindow)
     , ((modm .|. shiftMask, xK_m     ), sendMessage RestoreNextMinimizedWin)
 
     -- Toggle the status bar gap
@@ -256,11 +241,7 @@ myEventHook = mempty
 -- Status bars and logging
 
 -- Perform an arbitrary action on each internal state change or X event.
--- See the 'DynamicLog' extension for examples.
---
--- To emulate dwm's status bar
---
--- > logHook = dynamicLogDzen
+-- See the 'XMonad.Hooks.DynamicLog' extension for examples.
 --
 myLogHook xmproc = dynamicLogWithPP $ xmobarPP {
         ppOutput = hPutStrLn xmproc,
@@ -298,7 +279,6 @@ myConfig xmproc = defaultConfig {
         focusFollowsMouse  = myFocusFollowsMouse,
         borderWidth        = myBorderWidth,
         modMask            = myModMask,
-        numlockMask        = myNumlockMask,
         workspaces         = myWorkspaces,
         normalBorderColor  = myNormalBorderColor,
         focusedBorderColor = myFocusedBorderColor,
