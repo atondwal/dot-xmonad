@@ -43,7 +43,7 @@ myBorderWidth   = 1
 -- ("right alt"), which does not conflict with emacs keybindings. The
 -- "windows key" is usually mod4Mask.
 --
-myModMask       = mod1Mask
+myModMask       = mod4Mask
 
 -- The default number of workspaces (virtual screens) and their names.
 -- By default we use numeric strings, but any string may be used as a
@@ -90,23 +90,27 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_n     ), windows W.focusDown)
     , ((modm,               xK_p     ), windows W.focusUp)
 
-    -- Move focus to the neighboring window
+    -- Swap the focused window with the next/previous window
+    , ((modm .|. shiftMask, xK_n     ), windows W.swapDown)
+    , ((modm .|. shiftMask, xK_p     ), windows W.swapUp)
+
+    -- Move focus to the neighbor window
     , ((modm,               xK_k     ), sendMessage $ Go U)
     , ((modm,               xK_j     ), sendMessage $ Go D)
     , ((modm,               xK_h     ), sendMessage $ Go L)
     , ((modm,               xK_l     ), sendMessage $ Go R)
 
-    -- Swap the focused window with the neighboring window
+    -- Swap the focused window with the neighbor window
     , ((modm .|. shiftMask, xK_k     ), sendMessage $ Swap U)
     , ((modm .|. shiftMask, xK_j     ), sendMessage $ Swap D)
     , ((modm .|. shiftMask, xK_h     ), sendMessage $ Swap L)
     , ((modm .|. shiftMask, xK_l     ), sendMessage $ Swap R)
 
     -- Move focus to the master window
-    , ((modm,               xK_a     ), windows W.focusMaster  )
+    , ((modm,               xK_Return), windows W.focusMaster  )
 
     -- Swap the focused window and the master window
-    , ((modm .|. shiftMask, xK_a     ), windows W.swapMaster)
+    , ((modm .|. shiftMask, xK_Return), windows W.swapMaster)
 
     -- Shrink the master area
     , ((modm .|. shiftMask, xK_comma ), sendMessage Shrink)
@@ -134,7 +138,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm,               xK_b     ), sendMessage ToggleStruts)
 
     -- Quit xmonad
-    , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
+    , ((modm .|. controlMask, xK_q   ), io (exitWith ExitSuccess))
 
     -- Restart xmonad
     , ((modm .|. controlMask, xK_r   ), spawn "xmonad --recompile; xmonad --restart")
@@ -146,7 +150,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- mod-shift-[1..9], Move client to workspace N
     --
     [((m .|. modm, k), windows $ f i)
-        | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
+        | (i, k) <- zip (XMonad.workspaces conf) [xK_F1 .. xK_F9]
         , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
     ++
 
