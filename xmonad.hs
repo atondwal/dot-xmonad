@@ -20,6 +20,8 @@ import XMonad.Layout.Grid
 import XMonad.Layout.Minimize
 import XMonad.Layout.LayoutModifier
 
+import qualified XMonad.Actions.FlexibleManipulate as Flex
+
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
@@ -170,7 +172,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm, button2), (\w -> focus w >> windows W.shiftMaster))
 
     -- mod-button3, Set the window to floating mode and resize by dragging
-    , ((modm, button3), (\w -> focus w >> mouseResizeWindow w
+    , ((modm, button3), (\w -> focus w >> Flex.mouseWindow Flex.resize w
                                        >> windows W.shiftMaster))
 
     -- you may also bind events to the mouse scroll wheel (button4 and button5)
