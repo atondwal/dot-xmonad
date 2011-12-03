@@ -12,8 +12,6 @@ import Data.Monoid
 import System.Exit
 
 import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.ManageDocks
-import XMonad.Util.Run(spawnPipe)
 import System.IO
 
 import XMonad.Layout.Master
@@ -189,7 +187,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = avoidStruts (tiled ||| masteredGrid ||| grid ||| Full)
+myLayout = tiled ||| masteredGrid ||| grid ||| Full
   where
      -- tiling algorithms
      tiled        = configurableNavigation noNavigateBorders $ minimize $ Tall nmaster delta ratio
@@ -220,7 +218,7 @@ myLayout = avoidStruts (tiled ||| masteredGrid ||| grid ||| Full)
 -- To match on the WM_NAME, you can use 'title' in the same way that
 -- 'className' and 'resource' are used below.
 --
-myManageHook = manageDocks <+> composeAll
+myManageHook = composeAll
     [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat
     , resource  =? "desktop_window" --> doIgnore
@@ -243,10 +241,16 @@ myEventHook = mempty
 -- Perform an arbitrary action on each internal state change or X event.
 -- See the 'XMonad.Hooks.DynamicLog' extension for examples.
 --
-myLogHook xmproc = dynamicLogWithPP $ xmobarPP {
-        ppOutput = hPutStrLn xmproc,
-        ppTitle = xmobarColor "green" "" . shorten 50
+myLogHook = return ()
+myBar = "xmobar"
+myPP = xmobarPP {
+        ppCurrent         = xmobarColor "yellow" "" . wrap "[" "]",
+        ppVisible         = wrap "(" ")",
+        ppHidden          = xmobarColor "yellow" "",
+        ppHiddenNoWindows = id,
+        ppTitle           = xmobarColor "green" "" . shorten 50
     }
+toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
 
 ------------------------------------------------------------------------
 -- Startup hook
@@ -263,9 +267,7 @@ myStartupHook = return ()
 
 -- Run xmonad with the settings you specify. No need to modify this.
 --
-main = do
-    xmproc <- spawnPipe "xmobar"
-    xmonad $ myConfig $ xmproc
+main = xmonad =<< statusBar myBar myPP toggleStrutsKey myConfig
 
 -- A structure containing your configuration settings, overriding
 -- fields in the default config. Any you don't override, will
@@ -273,7 +275,7 @@ main = do
 --
 -- No need to modify this.
 --
-myConfig xmproc = defaultConfig {
+myConfig = defaultConfig {
       -- simple stuff
         terminal           = myTerminal,
         focusFollowsMouse  = myFocusFollowsMouse,
@@ -291,6 +293,6 @@ myConfig xmproc = defaultConfig {
         layoutHook         = myLayout,
         manageHook         = myManageHook,
         handleEventHook    = myEventHook,
-        logHook            = myLogHook xmproc,
+        logHook            = myLogHook,
         startupHook        = myStartupHook
     }
