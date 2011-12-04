@@ -10,6 +10,7 @@ import qualified XMonad.Layout.BoringWindows as BW
 import XMonad.Layout.Minimize
 import XMonad.Layout.Master
 
+import XMonad.Layout.MouseResizableTile
 import XMonad.Layout.Grid
 
 import XMonad.Prompt
@@ -159,7 +160,11 @@ myLayout = modifier (tiled ||| masteredGrid ||| grid ||| Full)
                   . BW.boringWindows
                   . minimize
      -- layouts
-     tiled        = Tall nmaster delta ratio
+     tiled        = mouseResizableTile { nmaster    = nmaster
+                                       , masterFrac = ratio
+                                       , fracIncrement = delta
+                                       , draggerType   = BordersDragger
+                                       }
      grid         = Grid
      masteredGrid = mastered delta ratio $ Grid
      -- parameters
