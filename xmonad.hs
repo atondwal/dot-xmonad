@@ -9,7 +9,7 @@ import XMonad.Layout.Master
 import XMonad.Layout.WindowNavigation
 import XMonad.Layout.Grid
 import XMonad.Layout.Minimize
-import XMonad.Layout.LayoutModifier
+import qualified XMonad.Layout.BoringWindows as BW
 
 import XMonad.Prompt
 import XMonad.Prompt.Shell
@@ -81,10 +81,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_r     ), refresh)
 
     -- Move focus to the next/previous window
-    , ((modm,               xK_Tab   ), windows W.focusDown)
-    , ((modm .|. shiftMask, xK_Tab   ), windows W.focusUp)
-    , ((modm,               xK_n     ), windows W.focusDown)
-    , ((modm,               xK_p     ), windows W.focusUp)
+    , ((modm,               xK_Tab   ), BW.focusDown)
+    , ((modm .|. shiftMask, xK_Tab   ), BW.focusUp)
+    , ((modm,               xK_n     ), BW.focusDown)
+    , ((modm,               xK_p     ), BW.focusUp)
     -- Swap the focused window with the next/previous window
     , ((modm .|. shiftMask, xK_n     ), windows W.swapDown)
     , ((modm .|. shiftMask, xK_p     ), windows W.swapUp)
@@ -100,7 +100,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_l     ), sendMessage $ Swap R)
 
     -- Move focus to the master window
-    , ((modm,               xK_Return), windows W.focusMaster  )
+    , ((modm,               xK_Return), BW.focusMaster  )
     -- Swap the focused window and the master window
     , ((modm .|. shiftMask, xK_Return), windows W.swapMaster)
     -- Shrink the master area
@@ -151,7 +151,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 ------------------------------------------------------------------------
 -- Layouts
 
-myLayout = tiled ||| masteredGrid ||| grid ||| Full
+myLayout = BW.boringWindows (tiled ||| masteredGrid ||| grid ||| Full)
   where
      -- tiling algorithms
      tiled        = configurableNavigation noNavigateBorders $ minimize $ Tall nmaster delta ratio
