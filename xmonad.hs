@@ -5,11 +5,12 @@ import System.Exit
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageHelpers
 
-import XMonad.Layout.Master
 import XMonad.Layout.WindowNavigation
-import XMonad.Layout.Grid
-import XMonad.Layout.Minimize
 import qualified XMonad.Layout.BoringWindows as BW
+import XMonad.Layout.Minimize
+import XMonad.Layout.Master
+
+import XMonad.Layout.Grid
 
 import XMonad.Prompt
 import XMonad.Prompt.Shell
@@ -151,16 +152,20 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 ------------------------------------------------------------------------
 -- Layouts
 
-myLayout = BW.boringWindows (tiled ||| masteredGrid ||| grid ||| Full)
+myLayout = modifier (tiled ||| masteredGrid ||| grid ||| Full)
   where
-     -- tiling algorithms
-     tiled        = configurableNavigation noNavigateBorders $ minimize $ Tall nmaster delta ratio
-     grid         = configurableNavigation noNavigateBorders $ minimize $ Grid
-     masteredGrid = configurableNavigation noNavigateBorders $ minimize $ mastered delta ratio $ Grid
-
-     nmaster = 1      -- The default number of windows in the master pane
-     ratio   = 1/2    -- Default proportion of screen occupied by master pane
-     delta   = 3/100  -- Percent of screen to increment by when resizing panes
+     -- layout modifiers
+     modifier     = configurableNavigation noNavigateBorders
+                  . BW.boringWindows
+                  . minimize
+     -- layouts
+     tiled        = Tall nmaster delta ratio
+     grid         = Grid
+     masteredGrid = mastered delta ratio $ Grid
+     -- parameters
+     nmaster      = 1      -- The default number of windows in the master pane
+     ratio        = 1/2    -- Default proportion of screen occupied by master pane
+     delta        = 3/100  -- Percent of screen to increment by when resizing panes
 
 
 ------------------------------------------------------------------------
