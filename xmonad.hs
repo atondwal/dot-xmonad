@@ -13,6 +13,7 @@ import XMonad.Layout.LayoutModifier
 
 import XMonad.Prompt
 import XMonad.Prompt.Shell
+import Control.Arrow (first)
 
 import qualified XMonad.Actions.FlexibleManipulate as Flex
 
@@ -30,6 +31,25 @@ myModMask            = mod4Mask
 myWorkspaces         = ["1","2","3","4","5","6","7","8","9"]
 myNormalBorderColor  = "#dddddd"
 myFocusedBorderColor = "#ff0000"
+myXPKeymap           = myXPKeymap' `M.union` defaultXPKeymap
+    where
+        myXPKeymap' = M.fromList $
+            map (first $ (,) controlMask)
+            [ (xK_m, setSuccess True >> setDone True)
+            , (xK_h, deleteString Prev)
+            , (xK_d, deleteString Next)
+            , (xK_b, moveCursor Prev)
+            , (xK_f, moveCursor Next)
+            , (xK_p, moveHistory W.focusDown')
+            , (xK_n, moveHistory W.focusUp')
+            ]
+myXPConfig           = defaultXPConfig {
+        font          = "xft:sans-9",
+        promptKeymap  = myXPKeymap,
+        height        = 24,
+        historyFilter = deleteAllDuplicates,
+        autoComplete  = Just 500000
+    }
 
 
 ------------------------------------------------------------------------
@@ -39,7 +59,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- launch a terminal
     [ ((modm,               xK_semicolon), spawn $ XMonad.terminal conf)
     -- Open the shell prompt
-    , ((modm,               xK_r     ), shellPrompt defaultXPConfig)
+    , ((modm,               xK_r     ), shellPrompt myXPConfig)
 
     -- close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
