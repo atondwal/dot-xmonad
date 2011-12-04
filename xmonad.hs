@@ -13,6 +13,7 @@ import XMonad.Layout.LayoutModifier
 
 import XMonad.Prompt
 import XMonad.Prompt.Shell
+import XMonad.Prompt.Window
 import Control.Arrow (first)
 
 import qualified XMonad.Actions.FlexibleManipulate as Flex
@@ -60,6 +61,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm,               xK_semicolon), spawn $ XMonad.terminal conf)
     -- Open the shell prompt
     , ((modm,               xK_r     ), shellPrompt myXPConfig)
+    -- Open the prompt to bring specified window to the current workspace
+    , ((modm .|. shiftMask, xK_b     ), windowPromptBring myXPConfig)
 
     -- close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
