@@ -59,64 +59,45 @@ myXPConfig           = defaultXPConfig {
 -- Key bindings
 
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
-    -- launch a terminal
+    -- Programs
     [ ((modm,               xK_semicolon), spawn $ XMonad.terminal conf)
-    -- Open the shell prompt
+    -- Prompts
     , ((modm,               xK_r     ), shellPrompt myXPConfig)
-    -- Open the prompt to bring specified window to the current workspace
     , ((modm .|. shiftMask, xK_b     ), windowPromptBring myXPConfig)
-
-    -- close focused window
+    -- Window manipulations
     , ((modm .|. shiftMask, xK_c     ), kill)
-    -- Push window back into tiling
-    , ((modm,               xK_t     ), withFocused $ windows . W.sink)
-    -- Minimize/Restore
+    , ((modm,               xK_t     ), withFocused $ windows . W.sink)  -- Push window back into tiling
     , ((modm,               xK_m     ), withFocused minimizeWindow)
     , ((modm .|. shiftMask, xK_m     ), sendMessage RestoreNextMinimizedWin)
-
-     -- Rotate through the available layout algorithms
+    , ((modm .|. shiftMask, xK_r     ), refresh)  -- Resize viewed windows to the correct size
+    -- Layout
     , ((modm,               xK_space ), sendMessage NextLayout)
-    --  Reset the layouts on the current workspace to default
-    , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
-
-    -- Resize viewed windows to the correct size
-    , ((modm .|. shiftMask, xK_r     ), refresh)
-
-    -- Move focus to the next/previous window
+    , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)  --  Reset the layouts on the current workspace to default
+    -- Moving the focus
+    , ((modm,               xK_Return), BW.focusMaster)
     , ((modm,               xK_Tab   ), BW.focusDown)
     , ((modm .|. shiftMask, xK_Tab   ), BW.focusUp)
     , ((modm,               xK_n     ), BW.focusDown)
     , ((modm,               xK_p     ), BW.focusUp)
-    -- Swap the focused window with the next/previous window
-    , ((modm .|. shiftMask, xK_n     ), windows W.swapDown)
-    , ((modm .|. shiftMask, xK_p     ), windows W.swapUp)
-    -- Move focus to the neighbor window
     , ((modm,               xK_k     ), sendMessage $ Go U)
     , ((modm,               xK_j     ), sendMessage $ Go D)
     , ((modm,               xK_h     ), sendMessage $ Go L)
     , ((modm,               xK_l     ), sendMessage $ Go R)
-    -- Swap the focused window with the neighbor window
+    -- Swapping windows
+    , ((modm .|. shiftMask, xK_Return), windows W.swapMaster)
+    , ((modm .|. shiftMask, xK_n     ), windows W.swapDown)
+    , ((modm .|. shiftMask, xK_p     ), windows W.swapUp)
     , ((modm .|. shiftMask, xK_k     ), sendMessage $ Swap U)
     , ((modm .|. shiftMask, xK_j     ), sendMessage $ Swap D)
     , ((modm .|. shiftMask, xK_h     ), sendMessage $ Swap L)
     , ((modm .|. shiftMask, xK_l     ), sendMessage $ Swap R)
-
-    -- Move focus to the master window
-    , ((modm,               xK_Return), BW.focusMaster  )
-    -- Swap the focused window and the master window
-    , ((modm .|. shiftMask, xK_Return), windows W.swapMaster)
-    -- Shrink the master area
+    -- Master area
     , ((modm .|. shiftMask, xK_comma ), sendMessage Shrink)
-    -- Expand the master area
     , ((modm .|. shiftMask, xK_period), sendMessage Expand)
-    -- Increment the number of windows in the master area
     , ((modm,               xK_comma ), sendMessage (IncMasterN 1))
-    -- Deincrement the number of windows in the master area
     , ((modm,               xK_period), sendMessage (IncMasterN (-1)))
-
-    -- Quit xmonad
+    -- Controling xmonad
     , ((modm .|. controlMask, xK_q   ), io (exitWith ExitSuccess))
-    -- Restart xmonad
     , ((modm .|. controlMask, xK_r   ), spawn "xmonad --recompile; xmonad --restart")
     ]
     ++
@@ -124,7 +105,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- mod-[1..9], Switch to workspace N
     -- mod-shift-[1..9], Move client to workspace N
     [((m .|. modm, k), windows $ f i)
-        | (i, k) <- zip (XMonad.workspaces conf) [xK_F1 .. xK_F9]
+        | (i, k) <- zip (XMonad.workspaces conf) [xK_F1 .. xK_F12]
         , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
     ++
 
@@ -139,12 +120,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 -- Mouse bindings
 
 myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
-    -- mod-button1, Set the window to floating mode and move by dragging
     [ ((modm, button1), (\w -> focus w >> mouseMoveWindow w
                                        >> windows W.shiftMaster))
-    -- mod-button2, Raise the window to the top of the stack
     , ((modm, button2), (\w -> focus w >> windows W.shiftMaster))
-    -- mod-button3, Set the window to floating mode and resize by dragging
     , ((modm, button3), (\w -> focus w >> Flex.mouseWindow Flex.resize w
                                        >> windows W.shiftMaster))
     ]
