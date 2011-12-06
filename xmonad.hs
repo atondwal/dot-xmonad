@@ -28,6 +28,7 @@ import qualified Data.Map        as M
 -- Variables
 
 myTerminal           = "sakura -e 'zsh --login'"
+myScreenLock         = "xscreensaver-command -lock"
 myFocusFollowsMouse  = True
 myBorderWidth        = 1
 myModMask            = mod4Mask
@@ -60,7 +61,8 @@ myXPConfig           = defaultXPConfig {
 
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Programs
-    [ ((modm,               xK_semicolon), spawn $ XMonad.terminal conf)
+    [ ((modm,                 xK_semicolon), spawn $ XMonad.terminal conf)
+    , ((modm .|. controlMask, xK_l        ), spawn myScreenLock)
     -- Prompts
     , ((modm,               xK_r     ), shellPrompt myXPConfig)
     , ((modm .|. shiftMask, xK_b     ), windowPromptBring myXPConfig)
