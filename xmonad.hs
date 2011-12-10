@@ -4,6 +4,7 @@ import System.Exit
 
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageHelpers
+import XMonad.Hooks.Place
 
 import XMonad.Layout.WindowNavigation
 import qualified XMonad.Layout.BoringWindows as BW
@@ -71,7 +72,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_t     ), withFocused $ windows . W.sink)  -- Push window back into tiling
     , ((modm,               xK_m     ), withFocused minimizeWindow)
     , ((modm .|. shiftMask, xK_m     ), sendMessage RestoreNextMinimizedWin)
-    , ((modm .|. shiftMask, xK_r     ), refresh)  -- Resize viewed windows to the correct size
+    , ((modm .|. shiftMask, xK_r     ), placeFocused simpleSmart)
     -- Layout
     , ((modm,               xK_space ), sendMessage NextLayout)
     , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)  --  Reset the layouts on the current workspace to default
