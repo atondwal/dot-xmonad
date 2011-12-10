@@ -166,8 +166,8 @@ myManageHook = composeAll
     , className =? "Audacious"      --> doFloat
     , className =? "Pidgin"         --> doFloat
     , className =? "Skype"          --> doFloat
-    , (className =? "Firefox" <&&> resource =? "Places") --> doFloat
-    , (className =? "Firefox" <&&> resource =? "Dialog") --> doCenterFloat
+    , className =? "Mikutter.rb"    --> doFloat
+    , (className =? "Firefox" <&&> fmap not (resource =? "Navigator"))  --> doFloat
     , isDialog                      --> doCenterFloat
     ]
 
