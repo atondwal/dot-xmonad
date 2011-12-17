@@ -174,6 +174,7 @@ myManageHook = composeAll
     , className =? "Gnome-mplayer"  --> doFloat
     , className =? "Gimp"           --> doFloat
     , className =? "Audacious"      --> doFloat
+    , className =? "Uim-pref-gtk"   --> doFloat
     , className =? "Pidgin"         --> doFloat
     , className =? "Skype"          --> doFloat
     , className =? "Mikutter.rb"    --> doFloat
