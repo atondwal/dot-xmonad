@@ -20,6 +20,7 @@ import XMonad.Prompt.Window
 import Control.Arrow (first)
 
 import qualified XMonad.Actions.FlexibleManipulate as Flex
+import XMonad.Actions.FloatSnap
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -99,6 +100,15 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_period), sendMessage Expand)
     , ((modm,               xK_comma ), sendMessage (IncMasterN 1))
     , ((modm,               xK_period), sendMessage (IncMasterN (-1)))
+    -- Floating windows
+    , ((modm,               xK_Left  ), withFocused $ snapMove   L Nothing)
+    , ((modm,               xK_Right ), withFocused $ snapMove   R Nothing)
+    , ((modm,               xK_Up    ), withFocused $ snapMove   U Nothing)
+    , ((modm,               xK_Down  ), withFocused $ snapMove   D Nothing)
+    , ((modm .|. shiftMask, xK_Left  ), withFocused $ snapShrink R Nothing)
+    , ((modm .|. shiftMask, xK_Right ), withFocused $ snapGrow   R Nothing)
+    , ((modm .|. shiftMask, xK_Up    ), withFocused $ snapShrink D Nothing)
+    , ((modm .|. shiftMask, xK_Down  ), withFocused $ snapGrow   D Nothing)
     -- Controling xmonad
     , ((modm .|. controlMask, xK_q   ), io (exitWith ExitSuccess))
     , ((modm .|. controlMask, xK_r   ), spawn "xmonad --recompile; xmonad --restart")
