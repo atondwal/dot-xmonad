@@ -6,13 +6,17 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.Place
 
+import XMonad.Layout.Renamed
 import XMonad.Layout.WindowNavigation
 import qualified XMonad.Layout.BoringWindows as BW
 import XMonad.Layout.Minimize
 import XMonad.Layout.Master
+import XMonad.Layout.Combo
 
 import XMonad.Layout.MouseResizableTile
 import XMonad.Layout.Grid
+import XMonad.Layout.TwoPane
+import XMonad.Layout.Tabbed
 
 import XMonad.Prompt
 import XMonad.Prompt.Shell
@@ -49,12 +53,15 @@ myXPKeymap           = myXPKeymap' `M.union` defaultXPKeymap
             , (xK_p, moveHistory W.focusDown')
             , (xK_n, moveHistory W.focusUp')
             ]
-myXPConfig           = defaultXPConfig {
+myXPConfig = defaultXPConfig {
         font          = "xft:sans-9",
         promptKeymap  = myXPKeymap,
         height        = 24,
         historyFilter = deleteAllDuplicates,
         autoComplete  = Just 500000
+    }
+myTheme = defaultTheme {
+        fontName = "xft:sans-9"
     }
 
 
@@ -95,6 +102,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_j     ), sendMessage $ Swap D)
     , ((modm .|. shiftMask, xK_h     ), sendMessage $ Swap L)
     , ((modm .|. shiftMask, xK_l     ), sendMessage $ Swap R)
+    -- Moving a window
+    , ((modm .|. controlMask, xK_k   ), sendMessage $ Move U)
+    , ((modm .|. controlMask, xK_j   ), sendMessage $ Move D)
+    , ((modm .|. controlMask, xK_h   ), sendMessage $ Move L)
+    , ((modm .|. controlMask, xK_l   ), sendMessage $ Move R)
     -- Master area
     , ((modm .|. shiftMask, xK_comma ), sendMessage Shrink)
     , ((modm .|. shiftMask, xK_period), sendMessage Expand)
@@ -144,24 +156,36 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 ------------------------------------------------------------------------
 -- Layouts
 
-myLayout = modifier (tiled ||| masteredGrid ||| grid ||| Full)
+myLayout = modifier layouts
   where
      -- layout modifiers
      modifier     = configurableNavigation noNavigateBorders
+                  . renamed [CutWordsLeft 1]
                   . BW.boringWindows
                   . minimize
      -- layouts
-     tiled        = mouseResizableTile { nmaster    = nmaster
-                                       , masterFrac = ratio
-                                       , fracIncrement = delta
-                                       , draggerType   = BordersDragger
-                                       }
-     grid         = Grid
-     masteredGrid = mastered delta ratio $ Grid
+     layouts =  renamed [Replace "Tile"   ] myTiled
+            ||| renamed [Replace "MTabbed"] masteredTabbed
+            ||| renamed [Replace "DTabbed"] dualTabbed
+            ||| renamed [Replace "Tabbed" ] myTabbed
+            ||| renamed [Replace "Full"   ] Full
+            ||| renamed [Replace "MGrid"  ] masteredGrid
+            ||| renamed [Replace "Grid"   ] myGrid
+
+     myTiled        = mouseResizableTile { nmaster       = nmaster
+                                         , masterFrac    = ratio
+                                         , fracIncrement = delta
+                                         , draggerType   = BordersDragger
+                                         }
+     myGrid         = Grid
+     myTabbed       = tabbed shrinkText myTheme
+     masteredGrid   = mastered delta ratio myGrid
+     masteredTabbed = mastered delta ratio myTabbed
+     dualTabbed     = combineTwo (TwoPane delta ratio) myTabbed myTabbed
      -- parameters
-     nmaster      = 1      -- The default number of windows in the master pane
-     ratio        = 1/2    -- Default proportion of screen occupied by master pane
-     delta        = 3/100  -- Percent of screen to increment by when resizing panes
+     nmaster        = 1      -- The default number of windows in the master pane
+     ratio          = 1/2    -- Default proportion of screen occupied by master pane
+     delta          = 3/100  -- Percent of screen to increment by when resizing panes
 
 
 ------------------------------------------------------------------------
