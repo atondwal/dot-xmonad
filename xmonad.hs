@@ -186,9 +186,9 @@ myLayout = modifier layouts
      masteredTabbed = mastered delta ratio myTabbed
      dualTabbed     = combineTwo (TwoPane delta ratio) myTabbed myTabbed
      -- parameters
-     nmaster        = 1      -- The default number of windows in the master pane
-     ratio          = 1/2    -- Default proportion of screen occupied by master pane
-     delta          = 3/100  -- Percent of screen to increment by when resizing panes
+     nmaster        = 1       -- The default number of windows in the master pane
+     ratio          = 66/100  -- Default proportion of screen occupied by master pane
+     delta          = 3/100   -- Percent of screen to increment by when resizing panes
 
 
 ------------------------------------------------------------------------
