@@ -200,11 +200,13 @@ myManageHook = composeAll
     , className =? "MPlayer"        --> doFloat
     , className =? "Gnome-mplayer"  --> doFloat
     , className =? "Gimp"           --> doFloat
+    , className =? "Gimp-2.6"       --> doFloat
     , className =? "Audacious"      --> doFloat
     , className =? "Uim-pref-gtk"   --> doFloat
     , className =? "Pidgin"         --> doFloat
     , className =? "Skype"          --> doFloat
     , className =? "Mikutter.rb"    --> doFloat
+    , className =? "net-minecraft-LauncherFrame" --> doFloat
     , (className =? "Firefox" <&&> fmap not (resource =? "Navigator"))  --> doFloat
     , isDialog                      --> doCenterFloat
     ]
