@@ -33,6 +33,8 @@ import qualified Data.Map        as M
 -- Variables
 
 myTerminal           = "sakura -e 'zsh --login'"
+myEditor             = "gvim"
+myBrowser            = "google-chrome"
 myScreenLock         = "xscreensaver-command -lock"
 myFocusFollowsMouse  = True
 myBorderWidth        = 1
@@ -70,6 +72,8 @@ myTheme = defaultTheme {
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Programs
     [ ((modm,                 xK_semicolon), spawn $ XMonad.terminal conf)
+    , ((modm,                 xK_e        ), spawn myEditor)
+    , ((modm,                 xK_w        ), spawn myBrowser)
     , ((modm .|. controlMask, xK_l        ), spawn myScreenLock)
     -- Prompts
     , ((modm,               xK_r     ), shellPrompt myXPConfig)
