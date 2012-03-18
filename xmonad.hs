@@ -195,25 +195,28 @@ myLayout = modifier layouts
 -- Window rules
 
 myManageHook = composeAll
-    [ resource  =? "desktop_window" --> doIgnore
-    , resource  =? "kdesktop"       --> doIgnore
-    , className =? "MPlayer"        --> doFloat
-    , className =? "Gnome-mplayer"  --> doFloat
-    , className =? "Gimp"           --> doFloat
-    , className =? "Gimp-2.6"       --> doFloat
-    , className =? "Audacious"      --> doFloat
-    , className =? "Uim-pref-gtk"   --> doFloat
-    , className =? "Pidgin"         --> doFloat
-    , className =? "Skype"          --> doFloat
+    [ resource   =? "desktop_window"  --> doIgnore
+    , resource   =? "kdesktop"        --> doIgnore
+    , className  =? "MPlayer"         --> doFloat
+    , className  =? "Gnome-mplayer"   --> doFloat
+    , className  =? "Gimp"            --> doFloat
+    , className  =? "Gimp-2.6"        --> doFloat
+    , className  =? "Audacious"       --> doFloat
+    , className  =? "Uim-pref-gtk"    --> doFloat
+    , className  =? "Pidgin"          --> doFloat
+    , className  =? "Skype"           --> doFloat
     , windowRole =? chatCrxWindowRole --> doFloat
-    , className =? "Mikutter.rb"    --> doFloat
-    , className =? "net-minecraft-LauncherFrame" --> doFloat
-    , (className =? "Firefox" <&&> fmap not (resource =? "Navigator"))  --> doFloat
-    , isDialog                      --> doCenterFloat
+    , className  =? "Mikutter.rb"     --> doFloat
+    , minecraftWindow                 --> doFloat
+    , firefoxDialogs                  --> doFloat
+    , isDialog                        --> doCenterFloat
     ]
   where
     windowRole = stringProperty "WM_WINDOW_ROLE"
     chatCrxWindowRole = "crx_nckgahadagoaajjgafhacjanaoiihapd" 
+    minecraftWindow = className =? "net-minecraft-LauncherFrame"
+    firefoxDialogs =    className =? "Firefox"
+                   <&&> fmap not (resource =? "Navigator")
 
 
 ------------------------------------------------------------------------
