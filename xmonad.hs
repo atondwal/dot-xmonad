@@ -205,11 +205,15 @@ myManageHook = composeAll
     , className =? "Uim-pref-gtk"   --> doFloat
     , className =? "Pidgin"         --> doFloat
     , className =? "Skype"          --> doFloat
+    , windowRole =? chatCrxWindowRole --> doFloat
     , className =? "Mikutter.rb"    --> doFloat
     , className =? "net-minecraft-LauncherFrame" --> doFloat
     , (className =? "Firefox" <&&> fmap not (resource =? "Navigator"))  --> doFloat
     , isDialog                      --> doCenterFloat
     ]
+  where
+    windowRole = stringProperty "WM_WINDOW_ROLE"
+    chatCrxWindowRole = "crx_nckgahadagoaajjgafhacjanaoiihapd" 
 
 
 ------------------------------------------------------------------------
