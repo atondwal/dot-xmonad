@@ -216,7 +216,7 @@ myManageHook = composeAll
     chatCrxWindowRole = "crx_nckgahadagoaajjgafhacjanaoiihapd" 
     minecraftWindow = className =? "net-minecraft-LauncherFrame"
     firefoxDialogs =    className =? "Firefox"
-                   <&&> fmap not (resource =? "Navigator")
+                   <&&> resource /=? "Navigator"
 
 
 ------------------------------------------------------------------------
