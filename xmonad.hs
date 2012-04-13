@@ -74,7 +74,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm,                 xK_semicolon), spawn $ XMonad.terminal conf)
     , ((modm,                 xK_e        ), spawn myEditor)
     , ((modm,                 xK_w        ), spawn myBrowser)
-    , ((modm .|. controlMask, xK_l        ), spawn myScreenLock)
+    , ((modm .|. controlMask, xK_x        ), spawn myScreenLock)
     -- Prompts
     , ((modm,               xK_r     ), shellPrompt myXPConfig)
     , ((modm .|. shiftMask, xK_b     ), windowPromptBring myXPConfig)
