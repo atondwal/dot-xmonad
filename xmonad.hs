@@ -11,6 +11,7 @@ import qualified XMonad.Layout.BoringWindows as BW
 import XMonad.Layout.Minimize
 import XMonad.Layout.Master
 import XMonad.Layout.Combo
+import XMonad.Layout.Fullscreen
 
 import XMonad.Layout.MouseResizableTile
 import XMonad.Layout.Grid
@@ -166,6 +167,7 @@ myLayout = modifier layouts
                   . renamed [CutWordsLeft 1]
                   . BW.boringWindows
                   . minimize
+                  . fullscreenFull
      -- layouts
      layouts =  renamed [Replace "Tile"   ] myTiled
             ||| renamed [Replace "MTabbed"] masteredTabbed
@@ -195,7 +197,8 @@ myLayout = modifier layouts
 -- Window rules
 
 myManageHook = composeAll
-    [ resource   =? "desktop_window"  --> doIgnore
+    [ fullscreenManageHook
+    , resource   =? "desktop_window"  --> doIgnore
     , resource   =? "kdesktop"        --> doIgnore
     , className  =? "MPlayer"         --> doFloat
     , className  =? "Gnome-mplayer"   --> doFloat
@@ -222,7 +225,7 @@ myManageHook = composeAll
 ------------------------------------------------------------------------
 -- Event handling
 
-myEventHook = mempty
+myEventHook = fullscreenEventHook
 
 
 ------------------------------------------------------------------------
