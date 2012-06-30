@@ -35,7 +35,7 @@ import qualified Data.Map        as M
 
 myTerminal           = "sakura -e 'zsh --login'"
 myEditor             = "gvim"
-myBrowser            = "google-chrome"
+myBrowser            = "firefox"
 myScreenLock         = "xscreensaver-command -lock"
 myFocusFollowsMouse  = True
 myBorderWidth        = 1
