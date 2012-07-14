@@ -160,7 +160,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 ------------------------------------------------------------------------
 -- Layouts
 
-myLayout = modifier layouts
+myLayoutHook = modifier layouts
   where
      -- layout modifiers
      modifier     = configurableNavigation noNavigateBorders
@@ -268,7 +268,7 @@ myConfig = defaultConfig {
         mouseBindings      = myMouseBindings,
 
       -- hooks, layouts
-        layoutHook         = myLayout,
+        layoutHook         = myLayoutHook,
         manageHook         = myManageHook,
         handleEventHook    = myEventHook,
         logHook            = myLogHook,
