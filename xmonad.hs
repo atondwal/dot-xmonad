@@ -189,7 +189,7 @@ myLayoutHook = modifier layouts
      dualTabbed     = combineTwo (TwoPane delta ratio) myTabbed myTabbed
      -- parameters
      nmaster        = 1       -- The default number of windows in the master pane
-     ratio          = 66/100  -- Default proportion of screen occupied by master pane
+     ratio          = 3/5     -- Default proportion of screen occupied by master pane
      delta          = 3/100   -- Percent of screen to increment by when resizing panes
 
 
