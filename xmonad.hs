@@ -78,6 +78,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. controlMask, xK_x        ), spawn myScreenLock)
     -- Prompts
     , ((modm,               xK_r     ), shellPrompt myXPConfig)
+    , ((modm .|. shiftMask, xK_g     ), windowPromptGoto  myXPConfig)
     , ((modm .|. shiftMask, xK_b     ), windowPromptBring myXPConfig)
     -- Window manipulations
     , ((modm .|. shiftMask, xK_c     ), kill)
