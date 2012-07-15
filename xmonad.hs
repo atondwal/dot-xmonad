@@ -23,6 +23,7 @@ import XMonad.Prompt.Shell
 import XMonad.Prompt.Window
 import Control.Arrow (first)
 
+import XMonad.Actions.DynamicWorkspaces
 import qualified XMonad.Actions.FlexibleManipulate as Flex
 import XMonad.Actions.FloatSnap
 
@@ -40,7 +41,7 @@ myScreenLock         = "xscreensaver-command -lock"
 myFocusFollowsMouse  = True
 myBorderWidth        = 2
 myModMask            = mod4Mask
-myWorkspaces         = ["1","2","3","4","5","6","7","8","9"]
+myWorkspaces         = ["a","b","c","d","e","f","g","h","i"]
 myNormalBorderColor  = "#dddddd"
 myFocusedBorderColor = "#ff0000"
 myXPKeymap           = myXPKeymap' `M.union` defaultXPKeymap
@@ -80,12 +81,16 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_r     ), shellPrompt       myXPConfig)
     , ((modm .|. shiftMask, xK_g     ), windowPromptGoto  myXPConfig)
     , ((modm .|. shiftMask, xK_b     ), windowPromptBring myXPConfig)
+    -- Workspaces
+    , ((modm,               xK_v     ), selectWorkspace myXPConfig)
+    , ((modm .|. shiftMask, xK_r     ), renameWorkspace myXPConfig)
+    , ((modm .|. shiftMask, xK_x     ), removeEmptyWorkspace)
+    , ((modm,               xK_m     ), withWorkspace myXPConfig (windows . W.shift))
     -- Window manipulations
     , ((modm .|. shiftMask, xK_c     ), kill)
     , ((modm,               xK_t     ), withFocused $ windows . W.sink)  -- Push window back into tiling
-    , ((modm,               xK_m     ), withFocused minimizeWindow)
-    , ((modm .|. shiftMask, xK_m     ), sendMessage RestoreNextMinimizedWin)
-    , ((modm .|. shiftMask, xK_r     ), refresh)  -- Resize viewed windows to the correct size
+    , ((modm,               xK_i     ), withFocused minimizeWindow)
+    , ((modm .|. shiftMask, xK_i     ), sendMessage RestoreNextMinimizedWin)
     -- Layout
     , ((modm,               xK_space ), sendMessage NextLayout)
     , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)  --  Reset the layouts on the current workspace to default
