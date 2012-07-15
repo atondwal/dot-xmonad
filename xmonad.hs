@@ -80,7 +80,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_g     ), windowPromptGoto  myXPConfig)
     , ((modm,               xK_b     ), windowPromptBring myXPConfig)
     -- Workspaces
-    , ((modm,               xK_v     ), selectWorkspace myXPConfig { autoComplete = Nothing })
+    , ((modm,               xK_a     ), addWorkspacePrompt myXPConfig)
+    , ((modm,               xK_v     ), selectWorkspace myXPConfig)
     , ((modm .|. shiftMask, xK_r     ), renameWorkspace myXPConfig { autoComplete = Nothing })
     , ((modm .|. shiftMask, xK_x     ), removeEmptyWorkspace)
     , ((modm,               xK_m     ), withWorkspace myXPConfig (windows . W.shift))
