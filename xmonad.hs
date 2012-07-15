@@ -7,7 +7,7 @@ import XMonad.Hooks.ManageHelpers
 
 import XMonad.Layout.Renamed
 import XMonad.Layout.WindowNavigation
-import qualified XMonad.Layout.BoringWindows as BW
+import XMonad.Layout.BoringWindows (boringWindows, focusMaster, focusUp, focusDown)
 import XMonad.Layout.Maximize
 import XMonad.Layout.Minimize
 import XMonad.Layout.Master
@@ -97,11 +97,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_space ), sendMessage NextLayout)
     , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)  --  Reset the layouts on the current workspace to default
     -- Moving the focus
-    , ((modm,               xK_Return), BW.focusMaster)
-    , ((modm,               xK_Tab   ), BW.focusDown)
-    , ((modm .|. shiftMask, xK_Tab   ), BW.focusUp)
-    , ((modm,               xK_n     ), BW.focusDown)
-    , ((modm,               xK_p     ), BW.focusUp)
+    , ((modm,               xK_Return), focusMaster)
+    , ((modm,               xK_Tab   ), focusDown)
+    , ((modm .|. shiftMask, xK_Tab   ), focusUp)
+    , ((modm,               xK_n     ), focusDown)
+    , ((modm,               xK_p     ), focusUp)
     , ((modm,               xK_k     ), sendMessage $ Go U)
     , ((modm,               xK_j     ), sendMessage $ Go D)
     , ((modm,               xK_h     ), sendMessage $ Go L)
@@ -173,7 +173,7 @@ myLayoutHook = modifier layouts
      -- layout modifiers
      modifier     = configurableNavigation noNavigateBorders
                   . renamed [CutWordsLeft 1]
-                  . BW.boringWindows
+                  . boringWindows
                   . maximize
                   . minimize
                   . fullscreenFull
