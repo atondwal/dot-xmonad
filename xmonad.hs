@@ -139,9 +139,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- mod-[1..9], Switch to workspace N
     -- mod-shift-[1..9], Move client to workspace N
-    [((m .|. modm, k), windows $ f i)
-        | (i, k) <- zip (XMonad.workspaces conf) [xK_F1 .. xK_F12]
-        , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
+    [((modm,               k), a) | (k, a) <- zip [xK_1..xK_9] (map (withNthWorkspace W.greedyView) [0..])]
+    ++
+    [((modm .|. shiftMask, k), a) | (k, a) <- zip [xK_1..xK_9] (map (withNthWorkspace W.shift) [0..])]
     ++
 
     -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
