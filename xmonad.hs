@@ -135,13 +135,6 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [((modm,               k), a) | (k, a) <- zip [xK_1..xK_9] (map (withNthWorkspace W.greedyView) [0..])]
     ++
     [((modm .|. shiftMask, k), a) | (k, a) <- zip [xK_1..xK_9] (map (withNthWorkspace W.shift) [0..])]
-    ++
-
-    -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
-    -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
-    [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
-        | (key, sc) <- zip [xK_o, xK_a] [0..]
-        , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
 -- Modified version of `mergeDir' from XMonad.Layout.SubLayouts
 mergeDir' :: (W.Stack Window -> W.Stack Window) -> Window -> GroupMsg Window
