@@ -11,12 +11,11 @@ import XMonad.Layout.BoringWindows (boringWindows, focusMaster, focusUp, focusDo
 import XMonad.Layout.Maximize
 import XMonad.Layout.Minimize
 import XMonad.Layout.Master
-import XMonad.Layout.Combo
 import XMonad.Layout.Fullscreen
 
-import XMonad.Layout.MouseResizableTile
 import XMonad.Layout.Grid
-import XMonad.Layout.TwoPane
+import XMonad.Layout.Simplest
+import XMonad.Layout.SubLayouts
 import XMonad.Layout.Tabbed
 
 import XMonad.Prompt
@@ -98,8 +97,6 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)  --  Reset the layouts on the current workspace to default
     -- Moving the focus
     , ((modm,               xK_Return), focusMaster)
-    , ((modm,               xK_Tab   ), focusDown)
-    , ((modm .|. shiftMask, xK_Tab   ), focusUp)
     , ((modm,               xK_n     ), focusDown)
     , ((modm,               xK_p     ), focusUp)
     , ((modm,               xK_k     ), sendMessage $ Go U)
@@ -114,11 +111,19 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_j     ), sendMessage $ Swap D)
     , ((modm .|. shiftMask, xK_h     ), sendMessage $ Swap L)
     , ((modm .|. shiftMask, xK_l     ), sendMessage $ Swap R)
-    -- Moving a window
-    , ((modm .|. controlMask, xK_k   ), sendMessage $ Move U)
-    , ((modm .|. controlMask, xK_j   ), sendMessage $ Move D)
-    , ((modm .|. controlMask, xK_h   ), sendMessage $ Move L)
-    , ((modm .|. controlMask, xK_l   ), sendMessage $ Move R)
+    -- Sublayout
+    , ((modm .|. controlMask, xK_n     ), withFocused (sendMessage . mergeDir' W.focusDown'))
+    , ((modm .|. controlMask, xK_p     ), withFocused (sendMessage . mergeDir' W.focusUp'))
+    , ((modm .|. controlMask, xK_k     ), sendMessage $ pushGroup U)
+    , ((modm .|. controlMask, xK_j     ), sendMessage $ pushGroup D)
+    , ((modm .|. controlMask, xK_h     ), sendMessage $ pushGroup L)
+    , ((modm .|. controlMask, xK_l     ), sendMessage $ pushGroup R)
+    , ((modm .|. controlMask, xK_m     ), withFocused (sendMessage . MergeAll))
+    , ((modm .|. controlMask, xK_u     ), withFocused (sendMessage . UnMerge))
+    , ((modm .|. controlMask, xK_period), onGroup W.focusDown')
+    , ((modm .|. controlMask, xK_comma ), onGroup W.focusUp')
+    , ((modm,                 xK_Tab   ), onGroup W.focusDown')
+    , ((modm .|. shiftMask,   xK_Tab   ), onGroup W.focusUp')
     -- Master area
     , ((modm .|. shiftMask, xK_comma ), sendMessage Shrink)
     , ((modm .|. shiftMask, xK_period), sendMessage Expand)
@@ -152,6 +157,19 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
         | (key, sc) <- zip [xK_o, xK_a] [0..]
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
+-- Modified version of `mergeDir' from XMonad.Layout.SubLayouts
+mergeDir' :: (W.Stack Window -> W.Stack Window) -> Window -> GroupMsg Window
+mergeDir' f w = WithGroup g w
+  where
+    g cs = do
+        let c = W.focus cs
+        let onlyOthersExceptCurrent = W.filter (\o -> o == c || o `notElem` W.integrate cs)
+        flip whenJust (sendMessage . Merge c . W.focus . f)
+            =<< fmap (onlyOthersExceptCurrent =<<) currentStack
+        return cs
+    currentStack :: X (Maybe (W.Stack Window))
+    currentStack = gets (W.stack . W.workspace . W.current . windowset)
+
 
 ------------------------------------------------------------------------
 -- Mouse bindings
@@ -171,35 +189,22 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 myLayoutHook = modifier layouts
   where
      -- layout modifiers
-     modifier     = configurableNavigation noNavigateBorders
-                  . renamed [CutWordsLeft 1]
-                  . boringWindows
-                  . maximize
-                  . minimize
-                  . fullscreenFull
+     modifier = renamed [CutWordsLeft 3]
+              . fullscreenFull
+              . configurableNavigation noNavigateBorders
+              . mySubTabbed
+              . maximize
+              . minimize
+              . boringWindows
+     mySubTabbed x = addTabs shrinkText myTheme $ subLayout [] Simplest x
      -- layouts
-     layouts =  renamed [Replace "Tile"   ] myTiled
-            ||| renamed [Replace "MTabbed"] masteredTabbed
-            ||| renamed [Replace "DTabbed"] dualTabbed
-            ||| renamed [Replace "Tabbed" ] myTabbed
-            ||| renamed [Replace "Full"   ] Full
-            ||| renamed [Replace "MGrid"  ] masteredGrid
-            ||| renamed [Replace "Grid"   ] myGrid
-
-     myTiled        = mouseResizableTile { nmaster       = nmaster
-                                         , masterFrac    = ratio
-                                         , fracIncrement = delta
-                                         , draggerType   = BordersDragger
-                                         }
-     myGrid         = Grid
-     myTabbed       = tabbed shrinkText myTheme
-     masteredGrid   = mastered delta ratio myGrid
-     masteredTabbed = mastered delta ratio myTabbed
-     dualTabbed     = combineTwo (TwoPane delta ratio) myTabbed myTabbed
+     layouts =  Tall nmaster delta ratio
+            ||| renamed [CutWordsRight 1] (GridRatio $ 4/3)
+            ||| Full
      -- parameters
-     nmaster        = 1       -- The default number of windows in the master pane
-     ratio          = 3/5     -- Default proportion of screen occupied by master pane
-     delta          = 3/100   -- Percent of screen to increment by when resizing panes
+     nmaster = 1       -- The default number of windows in the master pane
+     ratio   = 3/5     -- Default proportion of screen occupied by master pane
+     delta   = 3/100   -- Percent of screen to increment by when resizing panes
 
 
 ------------------------------------------------------------------------
