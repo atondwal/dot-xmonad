@@ -1,34 +1,32 @@
 import XMonad
-import Data.Monoid
 import System.Exit
 
-import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.ManageHelpers
-
-import XMonad.Layout.Renamed
-import XMonad.Layout.WindowNavigation
-import XMonad.Layout.BoringWindows (boringWindows, focusMaster, focusUp, focusDown)
-import XMonad.Layout.Maximize
-import XMonad.Layout.Minimize
-import XMonad.Layout.Master
-import XMonad.Layout.Fullscreen
-
-import XMonad.Layout.Grid
-import XMonad.Layout.Simplest
-import XMonad.Layout.SubLayouts
-import XMonad.Layout.Tabbed
-
-import XMonad.Prompt
-import XMonad.Prompt.Shell
-import XMonad.Prompt.Window
-import Control.Arrow (first)
+import qualified XMonad.StackSet as W
+import qualified Data.Map        as M
 
 import XMonad.Actions.DynamicWorkspaces
 import qualified XMonad.Actions.FlexibleManipulate as Flex
 import XMonad.Actions.FloatSnap
 
-import qualified XMonad.StackSet as W
-import qualified Data.Map        as M
+import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.ManageHelpers
+
+import XMonad.Layout.BoringWindows (boringWindows, focusMaster, focusUp, focusDown)
+import XMonad.Layout.Fullscreen
+import XMonad.Layout.Maximize
+import XMonad.Layout.Minimize
+import XMonad.Layout.Renamed
+import XMonad.Layout.SubLayouts
+import XMonad.Layout.WindowNavigation
+
+import XMonad.Layout.Grid
+import XMonad.Layout.Simplest
+import XMonad.Layout.Tabbed
+
+import Control.Arrow (first)
+import XMonad.Prompt
+import XMonad.Prompt.Shell
+import XMonad.Prompt.Window
 
 
 ------------------------------------------------------------------------
@@ -127,7 +125,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_Up    ), withFocused $ snapShrink D Nothing)
     , ((modm .|. shiftMask, xK_Down  ), withFocused $ snapGrow   D Nothing)
     -- Controling xmonad
-    , ((modm .|. controlMask, xK_q   ), io (exitWith ExitSuccess))
+    , ((modm .|. controlMask, xK_q   ), io exitSuccess)
     , ((modm .|. controlMask, xK_r   ), spawn "xmonad --recompile; xmonad --restart")
     ]
     ++
@@ -147,7 +145,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
 -- Modified version of `mergeDir' from XMonad.Layout.SubLayouts
 mergeDir' :: (W.Stack Window -> W.Stack Window) -> Window -> GroupMsg Window
-mergeDir' f w = WithGroup g w
+mergeDir' f = WithGroup g
   where
     g cs = do
         let c = W.focus cs
@@ -162,12 +160,12 @@ mergeDir' f w = WithGroup g w
 ------------------------------------------------------------------------
 -- Mouse bindings
 
-myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
-    [ ((modm, button1), (\w -> focus w >> mouseMoveWindow w
-                                       >> windows W.shiftMaster))
-    , ((modm, button2), (\w -> focus w >> windows W.shiftMaster))
-    , ((modm, button3), (\w -> focus w >> Flex.mouseWindow Flex.resize w
-                                       >> windows W.shiftMaster))
+myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList
+    [ ((modm, button1), \w -> focus w >> mouseMoveWindow w
+                                      >> windows W.shiftMaster)
+    , ((modm, button2), \w -> focus w >> windows W.shiftMaster)
+    , ((modm, button3), \w -> focus w >> Flex.mouseWindow Flex.resize w
+                                      >> windows W.shiftMaster)
     ]
 
 
