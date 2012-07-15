@@ -8,6 +8,7 @@ import XMonad.Hooks.ManageHelpers
 import XMonad.Layout.Renamed
 import XMonad.Layout.WindowNavigation
 import qualified XMonad.Layout.BoringWindows as BW
+import XMonad.Layout.Maximize
 import XMonad.Layout.Minimize
 import XMonad.Layout.Master
 import XMonad.Layout.Combo
@@ -89,6 +90,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Window manipulations
     , ((modm .|. shiftMask, xK_c     ), kill)
     , ((modm,               xK_t     ), withFocused $ windows . W.sink)  -- Push window back into tiling
+    , ((modm,               xK_f     ), withFocused (sendMessage . maximizeRestore))
     , ((modm,               xK_i     ), withFocused minimizeWindow)
     , ((modm .|. shiftMask, xK_i     ), sendMessage RestoreNextMinimizedWin)
     -- Layout
@@ -172,6 +174,7 @@ myLayoutHook = modifier layouts
      modifier     = configurableNavigation noNavigateBorders
                   . renamed [CutWordsLeft 1]
                   . BW.boringWindows
+                  . maximize
                   . minimize
                   . fullscreenFull
      -- layouts
