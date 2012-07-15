@@ -105,7 +105,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_h     ), sendMessage $ Go L)
     , ((modm,               xK_l     ), sendMessage $ Go R)
     -- Swapping windows
-    , ((modm .|. shiftMask, xK_Return), windows W.swapMaster)
+    , ((modm .|. shiftMask, xK_Return), windows W.shiftMaster)
     , ((modm .|. shiftMask, xK_n     ), windows W.swapDown)
     , ((modm .|. shiftMask, xK_p     ), windows W.swapUp)
     , ((modm .|. shiftMask, xK_k     ), sendMessage $ Swap U)
