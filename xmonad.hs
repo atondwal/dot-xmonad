@@ -4,6 +4,8 @@ import System.Exit
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
+import XMonad.Actions.CycleWS (WSType(..))
+import XMonad.Actions.DynamicWorkspaceOrder
 import XMonad.Actions.DynamicWorkspaces
 import qualified XMonad.Actions.FlexibleManipulate as Flex
 import XMonad.Actions.FloatSnap
@@ -85,6 +87,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_r     ), renameWorkspace myXPConfig { autoComplete = Nothing })
     , ((modm .|. shiftMask, xK_x     ), removeEmptyWorkspace)
     , ((modm,               xK_m     ), withWorkspace myXPConfig (windows . W.shift))
+    , ((modm,               xK_Page_Down), moveToGreedy Next NonEmptyWS)
+    , ((modm,               xK_Page_Up  ), moveToGreedy Prev NonEmptyWS)
+    , ((modm .|. shiftMask, xK_Page_Down), moveToGreedy Next AnyWS)
+    , ((modm .|. shiftMask, xK_Page_Up  ), moveToGreedy Prev AnyWS)
     -- Window manipulations
     , ((modm .|. shiftMask, xK_c     ), kill)
     , ((modm,               xK_t     ), withFocused $ windows . W.sink)  -- Push window back into tiling
