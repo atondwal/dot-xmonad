@@ -4,8 +4,7 @@ import System.Exit
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
-import XMonad.Actions.CycleWS (WSType(..))
-import XMonad.Actions.DynamicWorkspaceOrder
+import XMonad.Actions.CycleWS
 import XMonad.Actions.DynamicWorkspaces
 import qualified XMonad.Actions.FlexibleManipulate as Flex
 import XMonad.Actions.FloatSnap
@@ -29,6 +28,8 @@ import Control.Arrow (first)
 import XMonad.Prompt
 import XMonad.Prompt.Shell
 import XMonad.Prompt.Window
+
+import XMonad.Util.WorkspaceCompare
 
 
 ------------------------------------------------------------------------
@@ -87,10 +88,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_r     ), renameWorkspace myXPConfig { autoComplete = Nothing })
     , ((modm .|. shiftMask, xK_x     ), removeEmptyWorkspace)
     , ((modm,               xK_m     ), withWorkspace myXPConfig (windows . W.shift))
-    , ((modm,               xK_Page_Down), moveToGreedy Next NonEmptyWS)
-    , ((modm,               xK_Page_Up  ), moveToGreedy Prev NonEmptyWS)
-    , ((modm .|. shiftMask, xK_Page_Down), moveToGreedy Next AnyWS)
-    , ((modm .|. shiftMask, xK_Page_Up  ), moveToGreedy Prev AnyWS)
+    , ((modm,               xK_Page_Down), findWorkspace getSortByTag Next NonEmptyWS 1 >>= windows . W.greedyView)
+    , ((modm,               xK_Page_Up  ), findWorkspace getSortByTag Prev NonEmptyWS 1 >>= windows . W.greedyView)
+    , ((modm .|. shiftMask, xK_Page_Down), findWorkspace getSortByTag Next AnyWS 1 >>= windows . W.greedyView)
+    , ((modm .|. shiftMask, xK_Page_Up  ), findWorkspace getSortByTag Prev AnyWS 1 >>= windows . W.greedyView)
     -- Window manipulations
     , ((modm .|. shiftMask, xK_c     ), kill)
     , ((modm,               xK_t     ), withFocused $ windows . W.sink)  -- Push window back into tiling
