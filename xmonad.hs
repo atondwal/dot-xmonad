@@ -233,11 +233,14 @@ myEventHook = fullscreenEventHook
 myLogHook = return ()
 myBar = "xmobar"
 myPP = xmobarPP {
-        ppCurrent         = xmobarColor "yellow" "" . wrap "[" "]",
+        ppCurrent         = xmobarColor "white" "",
         ppVisible         = wrap "(" ")",
-        ppHidden          = xmobarColor "yellow" "",
-        ppHiddenNoWindows = id,
-        ppTitle           = xmobarColor "green" "" . shorten 50
+        ppHidden          = xmobarColor "#555555" "",
+        ppHiddenNoWindows = xmobarColor "#555555" "",
+        ppUrgent          = xmobarColor "red" "",
+        ppSep             = "  :  ",
+        ppTitle           = xmobarColor "#ccff00" "" . shorten 50,
+        ppLayout          = xmobarColor "white" ""
     }
 toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
 
