@@ -81,7 +81,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Prompts
     , ((modm,               xK_r     ), shellPrompt       myXPConfig)
     , ((modm,               xK_g     ), windowPromptGoto  myXPConfig)
-    , ((modm,               xK_b     ), windowPromptBring myXPConfig)
+    , ((modm .|. shiftMask, xK_b     ), windowPromptBring myXPConfig)
     -- Workspaces
     , ((modm,               xK_a     ), addWorkspacePrompt myXPConfig)
     , ((modm,               xK_v     ), selectWorkspace myXPConfig)
