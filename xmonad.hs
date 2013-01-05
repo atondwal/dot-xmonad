@@ -37,7 +37,7 @@ import XMonad.Util.WorkspaceCompare
 
 myTerminal           = "sakura -e 'zsh --login'"
 myEditor             = "gvim"
-myBrowser            = "firefox"
+myBrowser            = "google-chrome"
 myScreenLock         = "xscreensaver-command -lock"
 myFocusFollowsMouse  = True
 myBorderWidth        = 2
