@@ -39,7 +39,8 @@ myTerminal           = "sakura -e 'zsh --login'"
 myEditor             = "gvim"
 myBrowser            = "google-chrome"
 myScreenLock         = "xscreensaver-command -lock"
-myFocusFollowsMouse  = True
+myFocusFollowsMouse  = False
+myClickJustFocuses   = False
 myBorderWidth        = 2
 myModMask            = mod4Mask
 myWorkspaces         = ["1","2","3"]
@@ -261,6 +262,7 @@ myConfig = defaultConfig {
       -- simple stuff
         terminal           = myTerminal,
         focusFollowsMouse  = myFocusFollowsMouse,
+        clickJustFocuses   = myClickJustFocuses,
         borderWidth        = myBorderWidth,
         modMask            = myModMask,
         workspaces         = myWorkspaces,
