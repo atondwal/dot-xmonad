@@ -36,7 +36,7 @@ import XMonad.Util.WorkspaceCompare
 -- Variables
 
 myTerminal           = "sakura -e 'zsh --login'"
-myEditor             = "gvim"
+myEditor             = "emacsclient --alternate-editor='' --create-frame"
 myBrowser            = "google-chrome"
 myScreenLock         = "xscreensaver-command -lock"
 myFocusFollowsMouse  = False
