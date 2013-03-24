@@ -1,19 +1,24 @@
 import XMonad
+import Control.Monad
 import System.Exit
+import System.IO
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
+import XMonad.Actions.CopyWindow
 import XMonad.Actions.CycleWS
 import XMonad.Actions.DynamicWorkspaces
 import qualified XMonad.Actions.FlexibleManipulate as Flex
 import XMonad.Actions.FloatSnap
 
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 
 import XMonad.Layout.BoringWindows (boringWindows, focusMaster, focusUp, focusDown)
 import XMonad.Layout.Fullscreen
+import XMonad.Layout.LayoutModifier
 import XMonad.Layout.Maximize
 import XMonad.Layout.Minimize
 import XMonad.Layout.Renamed
@@ -30,6 +35,7 @@ import XMonad.Prompt.Shell
 import XMonad.Prompt.Window
 
 import XMonad.Util.EZConfig
+import XMonad.Util.Run
 import XMonad.Util.WorkspaceCompare
 
 
@@ -81,9 +87,10 @@ myKeys conf = mkKeymap conf $
     , ("M-w",   spawn myBrowser)
     , ("M-C-x", spawn myScreenLock)
     -- Prompts
-    , ("M-r",   shellPrompt       myXPConfig)
-    , ("M-g",   windowPromptGoto  myXPConfig)
-    , ("M-S-b", windowPromptBring myXPConfig)
+    , ("M-r",   shellPrompt           myXPConfig)
+    , ("M-g",   windowPromptGoto      myXPConfig)
+    , ("M-S-b", windowPromptBring     myXPConfig)
+    , ("M-C-b", windowPromptBringCopy myXPConfig)
     -- Workspaces
     , ("M-a",   addWorkspacePrompt myXPConfig)
     , ("M-v",   selectWorkspace myXPConfig)
@@ -95,7 +102,7 @@ myKeys conf = mkKeymap conf $
     , ("M-S-<Page_Down>", findWorkspace getSortByTag Next AnyWS 1 >>= windows . W.greedyView)
     , ("M-S-<Page_Up>",   findWorkspace getSortByTag Prev AnyWS 1 >>= windows . W.greedyView)
     -- Window manipulations
-    , ("M-S-c", kill)
+    , ("M-S-c", kill1)
     , ("M-t",   withFocused $ windows . W.sink)  -- Push window back into tiling
     , ("M-f",   withFocused (sendMessage . maximizeRestore))
     , ("M-j",   withFocused minimizeWindow)
@@ -145,6 +152,8 @@ myKeys conf = mkKeymap conf $
     [("M-" ++ show n, a) | (n, a) <- zip [1..9] (map (withNthWorkspace W.greedyView) [0..])]
     ++
     [("M-S-" ++ show n, a) | (n, a) <- zip [1..9] (map (withNthWorkspace W.shift) [0..])]
+    ++
+    [("M-C-" ++ show n, a) | (n, a) <- zip [1..9] (map (withNthWorkspace copy) [0..])]
 
 -- Modified version of `mergeDir' from XMonad.Layout.SubLayouts
 mergeDir' :: (W.Stack Window -> W.Stack Window) -> Window -> GroupMsg Window
@@ -245,7 +254,26 @@ myPP = xmobarPP {
         ppTitle           = xmobarColor "#ccff00" "" . shorten 50,
         ppLayout          = xmobarColor "white" ""
     }
+myModifyPP pp = do
+    copies <- wsContainingCopies
+    let check ws | ws `elem` copies = xmobarColor "#cccc00" "" $ ws
+                 | otherwise = ppHidden pp ws
+    return pp { ppHidden = check }
 toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
+
+statusBar' cmd pp modifyPP k conf = do
+    h <- spawnPipe cmd
+    return $ conf
+        { layoutHook = avoidStruts (layoutHook conf)
+        , logHook = do
+            logHook conf
+            pp' <- modifyPP pp
+            dynamicLogWithPP pp' { ppOutput = hPutStrLn h }
+        , manageHook = manageHook conf <+> manageDocks
+        , keys = liftM2 M.union keys' (keys conf)
+        }
+  where
+    keys' = (`M.singleton` sendMessage ToggleStruts) . k
 
 
 ------------------------------------------------------------------------
@@ -257,7 +285,7 @@ myStartupHook = return ()
 ------------------------------------------------------------------------
 -- Run xmonad
 
-main = xmonad =<< statusBar myBar myPP toggleStrutsKey myConfig
+main = xmonad =<< statusBar' myBar myPP myModifyPP toggleStrutsKey myConfig
 
 myConfig = defaultConfig {
       -- simple stuff
