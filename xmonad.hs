@@ -103,6 +103,7 @@ myKeys conf = mkKeymap conf $
     , ("M-S-<Page_Up>",   findWorkspace getSortByTag Prev AnyWS 1 >>= windows . W.greedyView)
     -- Window manipulations
     , ("M-S-c", kill1)
+    , ("M-C-S-c", killAllOtherCopies >> kill1)
     , ("M-t",   withFocused $ windows . W.sink)  -- Push window back into tiling
     , ("M-f",   withFocused (sendMessage . maximizeRestore))
     , ("M-j",   withFocused minimizeWindow)
