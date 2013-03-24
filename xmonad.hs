@@ -29,6 +29,7 @@ import XMonad.Prompt
 import XMonad.Prompt.Shell
 import XMonad.Prompt.Window
 
+import XMonad.Util.EZConfig
 import XMonad.Util.WorkspaceCompare
 
 
@@ -73,77 +74,77 @@ myTheme = defaultTheme {
 ------------------------------------------------------------------------
 -- Key bindings
 
-myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
+myKeys conf = mkKeymap conf $
     -- Programs
-    [ ((modm,                 xK_semicolon), spawn $ XMonad.terminal conf)
-    , ((modm,                 xK_e        ), spawn myEditor)
-    , ((modm,                 xK_w        ), spawn myBrowser)
-    , ((modm .|. controlMask, xK_x        ), spawn myScreenLock)
+    [ ("M-;",   spawn $ XMonad.terminal conf)
+    , ("M-e",   spawn myEditor)
+    , ("M-w",   spawn myBrowser)
+    , ("M-C-x", spawn myScreenLock)
     -- Prompts
-    , ((modm,               xK_r     ), shellPrompt       myXPConfig)
-    , ((modm,               xK_g     ), windowPromptGoto  myXPConfig)
-    , ((modm .|. shiftMask, xK_b     ), windowPromptBring myXPConfig)
+    , ("M-r",   shellPrompt       myXPConfig)
+    , ("M-g",   windowPromptGoto  myXPConfig)
+    , ("M-S-b", windowPromptBring myXPConfig)
     -- Workspaces
-    , ((modm,               xK_a     ), addWorkspacePrompt myXPConfig)
-    , ((modm,               xK_v     ), selectWorkspace myXPConfig)
-    , ((modm .|. shiftMask, xK_r     ), renameWorkspace myXPConfig { autoComplete = Nothing })
-    , ((modm .|. shiftMask, xK_x     ), removeEmptyWorkspace)
-    , ((modm,               xK_m     ), withWorkspace myXPConfig (windows . W.shift))
-    , ((modm,               xK_Page_Down), findWorkspace getSortByTag Next NonEmptyWS 1 >>= windows . W.greedyView)
-    , ((modm,               xK_Page_Up  ), findWorkspace getSortByTag Prev NonEmptyWS 1 >>= windows . W.greedyView)
-    , ((modm .|. shiftMask, xK_Page_Down), findWorkspace getSortByTag Next AnyWS 1 >>= windows . W.greedyView)
-    , ((modm .|. shiftMask, xK_Page_Up  ), findWorkspace getSortByTag Prev AnyWS 1 >>= windows . W.greedyView)
+    , ("M-a",   addWorkspacePrompt myXPConfig)
+    , ("M-v",   selectWorkspace myXPConfig)
+    , ("M-S-r", renameWorkspace myXPConfig { autoComplete = Nothing })
+    , ("M-S-x", removeEmptyWorkspace)
+    , ("M-m",   withWorkspace myXPConfig (windows . W.shift))
+    , ("M-<Page_Down>",   findWorkspace getSortByTag Next NonEmptyWS 1 >>= windows . W.greedyView)
+    , ("M-<Page_Up>",     findWorkspace getSortByTag Prev NonEmptyWS 1 >>= windows . W.greedyView)
+    , ("M-S-<Page_Down>", findWorkspace getSortByTag Next AnyWS 1 >>= windows . W.greedyView)
+    , ("M-S-<Page_Up>",   findWorkspace getSortByTag Prev AnyWS 1 >>= windows . W.greedyView)
     -- Window manipulations
-    , ((modm .|. shiftMask, xK_c     ), kill)
-    , ((modm,               xK_t     ), withFocused $ windows . W.sink)  -- Push window back into tiling
-    , ((modm,               xK_f     ), withFocused (sendMessage . maximizeRestore))
-    , ((modm,               xK_j     ), withFocused minimizeWindow)
-    , ((modm,               xK_k     ), sendMessage RestoreNextMinimizedWin)
+    , ("M-S-c", kill)
+    , ("M-t",   withFocused $ windows . W.sink)  -- Push window back into tiling
+    , ("M-f",   withFocused (sendMessage . maximizeRestore))
+    , ("M-j",   withFocused minimizeWindow)
+    , ("M-k",   sendMessage RestoreNextMinimizedWin)
     -- Layout
-    , ((modm,               xK_space ), sendMessage NextLayout)
-    , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)  --  Reset the layouts on the current workspace to default
+    , ("M-<Space>",   sendMessage NextLayout)
+    , ("M-S-<Space>", setLayout $ XMonad.layoutHook conf)  --  Reset the layouts on the current workspace to default
     -- Moving the focus
-    , ((modm,               xK_Return), focusMaster)
-    , ((modm,               xK_n     ), focusDown)
-    , ((modm,               xK_p     ), focusUp)
-    , ((modm,               xK_Tab   ), windows W.focusDown)
-    , ((modm .|. shiftMask, xK_Tab   ), windows W.focusUp)
+    , ("M-<Return>", focusMaster)
+    , ("M-n",        focusDown)
+    , ("M-p",        focusUp)
+    , ("M-<Tab>",    windows W.focusDown)
+    , ("M-S-<Tab>",  windows W.focusUp)
     -- Swapping windows
-    , ((modm .|. shiftMask, xK_Return), windows W.shiftMaster)
-    , ((modm .|. shiftMask, xK_n     ), windows W.swapDown)
-    , ((modm .|. shiftMask, xK_p     ), windows W.swapUp)
+    , ("M-S-<Return>", windows W.shiftMaster)
+    , ("M-S-n",        windows W.swapDown)
+    , ("M-S-p",        windows W.swapUp)
     -- Sublayout
-    , ((modm .|. controlMask, xK_n     ), withFocused (sendMessage . mergeDir' W.focusDown'))
-    , ((modm .|. controlMask, xK_p     ), withFocused (sendMessage . mergeDir' W.focusUp'))
-    , ((modm .|. controlMask, xK_m     ), withFocused (sendMessage . MergeAll))
-    , ((modm .|. controlMask, xK_u     ), withFocused (sendMessage . UnMerge))
-    , ((modm,                 xK_period), onGroup W.focusDown')
-    , ((modm,                 xK_comma ), onGroup W.focusUp')
+    , ("M-C-n", withFocused (sendMessage . mergeDir' W.focusDown'))
+    , ("M-C-p", withFocused (sendMessage . mergeDir' W.focusUp'))
+    , ("M-C-m", withFocused (sendMessage . MergeAll))
+    , ("M-C-u", withFocused (sendMessage . UnMerge))
+    , ("M-.",   onGroup W.focusDown')
+    , ("M-,",   onGroup W.focusUp')
     -- Master area
-    , ((modm,               xK_h     ), sendMessage Shrink)
-    , ((modm,               xK_l     ), sendMessage Expand)
-    , ((modm .|. shiftMask, xK_h     ), sendMessage (IncMasterN 1))
-    , ((modm .|. shiftMask, xK_l     ), sendMessage (IncMasterN (-1)))
+    , ("M-h",   sendMessage Shrink)
+    , ("M-l",   sendMessage Expand)
+    , ("M-S-h", sendMessage (IncMasterN 1))
+    , ("M-S-l", sendMessage (IncMasterN (-1)))
     -- Floating windows
-    , ((modm,               xK_Left  ), withFocused $ snapMove   L Nothing)
-    , ((modm,               xK_Right ), withFocused $ snapMove   R Nothing)
-    , ((modm,               xK_Up    ), withFocused $ snapMove   U Nothing)
-    , ((modm,               xK_Down  ), withFocused $ snapMove   D Nothing)
-    , ((modm .|. shiftMask, xK_Left  ), withFocused $ snapShrink R Nothing)
-    , ((modm .|. shiftMask, xK_Right ), withFocused $ snapGrow   R Nothing)
-    , ((modm .|. shiftMask, xK_Up    ), withFocused $ snapShrink D Nothing)
-    , ((modm .|. shiftMask, xK_Down  ), withFocused $ snapGrow   D Nothing)
+    , ("M-<Left>",    withFocused $ snapMove   L Nothing)
+    , ("M-<Right>",   withFocused $ snapMove   R Nothing)
+    , ("M-<Up>",      withFocused $ snapMove   U Nothing)
+    , ("M-<Down>",    withFocused $ snapMove   D Nothing)
+    , ("M-S-<Left>",  withFocused $ snapShrink R Nothing)
+    , ("M-S-<Right>", withFocused $ snapGrow   R Nothing)
+    , ("M-S-<Up>",    withFocused $ snapShrink D Nothing)
+    , ("M-S-<Down>",  withFocused $ snapGrow   D Nothing)
     -- Controling xmonad
-    , ((modm .|. controlMask, xK_q   ), io exitSuccess)
-    , ((modm .|. controlMask, xK_r   ), spawn "xmonad --recompile; xmonad --restart")
+    , ("M-C-q", io exitSuccess)
+    , ("M-C-r", spawn "xmonad --recompile; xmonad --restart")
     ]
     ++
 
     -- mod-[1..9], Switch to workspace N
     -- mod-shift-[1..9], Move client to workspace N
-    [((modm,               k), a) | (k, a) <- zip [xK_1..xK_9] (map (withNthWorkspace W.greedyView) [0..])]
+    [("M-" ++ show n, a) | (n, a) <- zip [1..9] (map (withNthWorkspace W.greedyView) [0..])]
     ++
-    [((modm .|. shiftMask, k), a) | (k, a) <- zip [xK_1..xK_9] (map (withNthWorkspace W.shift) [0..])]
+    [("M-S-" ++ show n, a) | (n, a) <- zip [1..9] (map (withNthWorkspace W.shift) [0..])]
 
 -- Modified version of `mergeDir' from XMonad.Layout.SubLayouts
 mergeDir' :: (W.Stack Window -> W.Stack Window) -> Window -> GroupMsg Window
