@@ -1,5 +1,6 @@
 import XMonad
 import Control.Monad
+import System.Directory
 import System.Exit
 import System.IO
 
@@ -76,6 +77,8 @@ myTheme = defaultTheme {
         fontName = "xft:sans-9"
     }
 
+sessionFile = "/home/yuta/.workspaces"
+
 
 ------------------------------------------------------------------------
 -- Key bindings
@@ -101,6 +104,8 @@ myKeys conf = mkKeymap conf $
     , ("M-<Page_Up>",     findWorkspace getSortByTag Prev NonEmptyWS 1 >>= windows . W.greedyView)
     , ("M-S-<Page_Down>", findWorkspace getSortByTag Next AnyWS 1 >>= windows . W.greedyView)
     , ("M-S-<Page_Up>",   findWorkspace getSortByTag Prev AnyWS 1 >>= windows . W.greedyView)
+    , ("M-C-l", loadWorkspaces)
+    , ("M-C-s", saveWorkspaces)
     -- Window manipulations
     , ("M-S-c", kill1)
     , ("M-C-S-c", killAllOtherCopies >> kill1)
@@ -155,6 +160,17 @@ myKeys conf = mkKeymap conf $
     [("M-S-" ++ show n, a) | (n, a) <- zip [1..9] (map (withNthWorkspace W.shift) [0..])]
     ++
     [("M-C-" ++ show n, a) | (n, a) <- zip [1..9] (map (withNthWorkspace copy) [0..])]
+
+loadWorkspaces :: X ()
+loadWorkspaces =
+    whenX (io $ doesFileExist sessionFile) $ do
+        ws <- io $ fmap lines $ readFile sessionFile
+        forM_ ws addWorkspace
+
+saveWorkspaces :: X ()
+saveWorkspaces =
+    withWindowSet $ \ws ->
+        io $ writeFile sessionFile $ unlines $ map W.tag $ W.workspaces ws
 
 -- Modified version of `mergeDir' from XMonad.Layout.SubLayouts
 mergeDir' :: (W.Stack Window -> W.Stack Window) -> Window -> GroupMsg Window
