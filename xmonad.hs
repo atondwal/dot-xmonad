@@ -43,7 +43,7 @@ import XMonad.Util.WorkspaceCompare
 ------------------------------------------------------------------------
 -- Variables
 
-myTerminal           = "sakura -e 'zsh --login'"
+myTerminal           = "sakura --login"
 myEditor             = "emacsclient --alternate-editor='' --create-frame"
 myBrowser            = "google-chrome"
 myScreenLock         = "xscreensaver-command -lock"
