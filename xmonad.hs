@@ -238,6 +238,7 @@ myManageHook = composeAll
     , className  =? "Pidgin"          --> doFloat
     , className  =? "Skype"           --> doFloat
     , className  =? "Mikutter.rb"     --> doFloat
+    , className  =? "fontforge"       --> doFloat
     , chromePopupWindow               --> doFloat
     , minecraftWindow                 --> doFloat
     , firefoxDialogs                  --> doFloat
