@@ -1,4 +1,5 @@
 import XMonad
+import Control.Applicative
 import Control.Monad
 import System.Directory
 import System.Exit
@@ -90,7 +91,7 @@ myKeys conf = mkKeymap conf $
     , ("M-w",   spawn myBrowser)
     , ("M-C-x", spawn myScreenLock)
     -- Prompts
-    , ("M-r",   shellPrompt           myXPConfig)
+    , ("M-r",   shellPrompt =<< withHistMatch myXPConfig <$> initMatches)
     , ("M-g",   windowPromptGoto      myXPConfig)
     , ("M-S-b", windowPromptBring     myXPConfig)
     , ("M-C-b", windowPromptBringCopy myXPConfig)
@@ -160,6 +161,13 @@ myKeys conf = mkKeymap conf $
     [("M-S-" ++ show n, a) | (n, a) <- zip [1..9] (map (withNthWorkspace W.shift) [0..])]
     ++
     [("M-C-" ++ show n, a) | (n, a) <- zip [1..9] (map (withNthWorkspace copy) [0..])]
+  where
+    withHistMatch xpc hm = xpc
+        { promptKeymap = M.union (M.fromList [ ((0, xK_Up),   historyUpMatching hm)
+                                             , ((0, xK_Down), historyDownMatching hm)
+                                             ])
+                                 (promptKeymap xpc)
+        }
 
 loadWorkspaces :: X ()
 loadWorkspaces =
