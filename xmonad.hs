@@ -33,6 +33,7 @@ import XMonad.Layout.Tabbed
 
 import Control.Arrow (first)
 import XMonad.Prompt
+import XMonad.Prompt.Input
 import XMonad.Prompt.Shell
 import XMonad.Prompt.Window
 
@@ -88,6 +89,7 @@ myKeys conf = mkKeymap conf $
     -- Programs
     [ ("M-;",   spawn $ XMonad.terminal conf)
     , ("M-e",   spawn myEditor)
+    , ("M-S-e", startEmacsDaemonPrompt myXPConfig)
     , ("M-w",   spawn myBrowser)
     , ("M-C-x", spawn myScreenLock)
     -- Prompts
@@ -168,6 +170,11 @@ myKeys conf = mkKeymap conf $
                                              ])
                                  (promptKeymap xpc)
         }
+    startEmacsDaemonPrompt xpc = do
+        mname <- inputPrompt xpc "session"
+        case mname of
+            Nothing -> return ()
+            Just name -> spawn $ "emacsclient --alternate-editor='' --create-frame --no-wait --socket-name='" ++ name ++ "'"
 
 loadWorkspaces :: X ()
 loadWorkspaces =
