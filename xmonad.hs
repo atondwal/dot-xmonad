@@ -3,7 +3,9 @@ import Control.Applicative
 import Control.Monad
 import System.Directory
 import System.Exit
+import System.FilePath
 import System.IO
+import System.Posix.User
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -171,10 +173,14 @@ myKeys conf = mkKeymap conf $
                                  (promptKeymap xpc)
         }
     startEmacsDaemonPrompt xpc = do
-        mname <- inputPrompt xpc "session"
-        case mname of
+        uid <- liftIO getRealUserID
+        let socketDir = "/" </> "tmp" </> "emacs" ++ show uid
+        sessions <- liftIO $ filter (`notElem` [".", ".."]) <$> getDirectoryContents socketDir
+        let complFun = mkComplFunFromList' sessions
+        msession <- inputPromptWithCompl xpc "session" complFun
+        case msession of
             Nothing -> return ()
-            Just name -> spawn $ "emacsclient --alternate-editor='' --create-frame --no-wait --socket-name='" ++ name ++ "'"
+            Just session -> spawn $ "emacsclient --alternate-editor='' --create-frame --no-wait --socket-name='" ++ session ++ "'"
 
 loadWorkspaces :: X ()
 loadWorkspaces =
