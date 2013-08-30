@@ -91,7 +91,7 @@ myKeys conf = mkKeymap conf $
     -- Programs
     [ ("M-;",   spawn $ XMonad.terminal conf)
     , ("M-e",   spawn myEditor)
-    , ("M-S-e", startEmacsDaemonPrompt myXPConfig)
+    , ("M-S-e", startEmacsDaemonPrompt myXPConfig { autoComplete = Nothing })
     , ("M-w",   spawn myBrowser)
     , ("M-C-x", spawn myScreenLock)
     -- Prompts
