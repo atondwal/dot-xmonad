@@ -26,6 +26,8 @@ import XMonad.Layout.LayoutModifier
 import XMonad.Layout.Maximize
 import XMonad.Layout.Minimize
 import XMonad.Layout.Renamed
+import XMonad.Layout.Spiral
+import XMonad.Layout.StackTile
 import XMonad.Layout.SubLayouts
 import XMonad.Layout.WindowNavigation
 
@@ -235,6 +237,9 @@ myLayoutHook = modifier layouts
      mySubTabbed x = addTabs shrinkText myTheme $ subLayout [] Simplest x
      -- layouts
      layouts =  Tall nmaster delta ratio
+            ||| Mirror (Tall nmaster delta ratio)
+            ||| StackTile nmaster delta ratio
+            ||| spiral (6/9)
             ||| renamed [CutWordsRight 1] (GridRatio $ 4/3)
             ||| Full
      -- parameters
