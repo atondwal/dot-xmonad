@@ -1,49 +1,50 @@
-import XMonad
-import Control.Applicative
-import Control.Monad
-import System.Directory
-import System.Exit
-import System.FilePath
-import System.IO
-import System.Posix.User
+import           XMonad
+import qualified XMonad.StackSet                   as W
 
-import qualified XMonad.StackSet as W
-import qualified Data.Map        as M
+import           Control.Applicative
+import           Control.Monad
+import qualified Data.Map                          as M
+import           System.Directory
+import           System.Exit
+import           System.FilePath
+import           System.IO
+import           System.Posix.User
 
-import XMonad.Actions.CopyWindow
-import XMonad.Actions.CycleWS
-import XMonad.Actions.DynamicWorkspaces
+import           XMonad.Actions.CopyWindow
+import           XMonad.Actions.CycleWS
+import           XMonad.Actions.DynamicWorkspaces
 import qualified XMonad.Actions.FlexibleManipulate as Flex
-import XMonad.Actions.FloatSnap
+import           XMonad.Actions.FloatSnap
 
-import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.ManageHelpers
+import           XMonad.Hooks.DynamicLog
+import           XMonad.Hooks.ManageDocks
+import           XMonad.Hooks.ManageHelpers
 
-import XMonad.Layout.BoringWindows (boringWindows, focusMaster, focusUp, focusDown)
-import XMonad.Layout.Fullscreen
-import XMonad.Layout.LayoutModifier
-import XMonad.Layout.Maximize
-import XMonad.Layout.Minimize
-import XMonad.Layout.Renamed
-import XMonad.Layout.Spiral
-import XMonad.Layout.StackTile
-import XMonad.Layout.SubLayouts
-import XMonad.Layout.WindowNavigation
+import           XMonad.Layout.BoringWindows       (boringWindows, focusDown,
+                                                    focusMaster, focusUp)
+import           XMonad.Layout.Fullscreen
+import           XMonad.Layout.LayoutModifier
+import           XMonad.Layout.Maximize
+import           XMonad.Layout.Minimize
+import           XMonad.Layout.Renamed
+import           XMonad.Layout.Spiral
+import           XMonad.Layout.StackTile
+import           XMonad.Layout.SubLayouts
+import           XMonad.Layout.WindowNavigation
 
-import XMonad.Layout.Grid
-import XMonad.Layout.Simplest
-import XMonad.Layout.Tabbed
+import           XMonad.Layout.Grid
+import           XMonad.Layout.Simplest
+import           XMonad.Layout.Tabbed
 
-import Control.Arrow (first)
-import XMonad.Prompt
-import XMonad.Prompt.Input
-import XMonad.Prompt.Shell
-import XMonad.Prompt.Window
+import           Control.Arrow                     (first)
+import           XMonad.Prompt
+import           XMonad.Prompt.Input
+import           XMonad.Prompt.Shell
+import           XMonad.Prompt.Window
 
-import XMonad.Util.EZConfig
-import XMonad.Util.Run
-import XMonad.Util.WorkspaceCompare
+import           XMonad.Util.EZConfig
+import           XMonad.Util.Run
+import           XMonad.Util.WorkspaceCompare
 
 
 ------------------------------------------------------------------------
