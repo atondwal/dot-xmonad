@@ -180,7 +180,7 @@ myKeys conf = mkKeymap conf $
         let socketDir = "/" </> "tmp" </> "emacs" ++ show uid
         sessions <- liftIO $ filter (`notElem` [".", ".."]) <$> getDirectoryContents socketDir
         let complFun = mkComplFunFromList' sessions
-        msession <- inputPromptWithCompl xpc "session" complFun
+        msession <- inputPromptWithCompl xpc "Emacs session" complFun
         case msession of
             Nothing -> return ()
             Just session -> spawn $ "emacsclient --alternate-editor='' --create-frame --no-wait --socket-name='" ++ session ++ "'"
