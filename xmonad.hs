@@ -74,14 +74,14 @@ myXPKeymap           = myXPKeymap' `M.union` defaultXPKeymap
             , (xK_n, moveHistory W.focusUp')
             ]
 myXPConfig = defaultXPConfig {
-        font          = "xft:sans-9",
+        font          = "xft:sans-10",
         promptKeymap  = myXPKeymap,
         height        = 24,
         historyFilter = deleteAllDuplicates,
         autoComplete  = Just 500000
     }
 myTheme = defaultTheme {
-        fontName = "xft:sans-9"
+        fontName = "xft:sans-10"
     }
 
 sessionFile = "/home/yuta/.workspaces"
