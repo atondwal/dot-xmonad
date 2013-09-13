@@ -267,6 +267,7 @@ myManageHook = composeAll
     , className  =? "Skype"           --> doFloat
     , className  =? "Mikutter.rb"     --> doFloat
     , className  =? "fontforge"       --> doFloat
+    , className  =? "Xmessage"        --> doFloat
     , chromePopupWindow               --> doFloat
     , minecraftWindow                 --> doFloat
     , firefoxDialogs                  --> doFloat
