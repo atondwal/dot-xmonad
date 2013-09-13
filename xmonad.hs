@@ -252,6 +252,7 @@ myLayoutHook = modifier layouts
 ------------------------------------------------------------------------
 -- Window rules
 
+-- The 'xprop' utility is helpful for obtaining window's properties.
 myManageHook = composeAll
     [ fullscreenManageHook
     , resource   =? "desktop_window"  --> doIgnore
