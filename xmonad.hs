@@ -275,7 +275,7 @@ myManageHook = composeAll
     ]
   where
     chromePopupWindow = className =? "Google-chrome" <&&> windowRole =? "pop-up"
-    minecraftWindow = className =? "net-minecraft-LauncherFrame"
+    minecraftWindow = className =? "net-minecraft-bootstrap-Bootstrap"
     firefoxDialogs = className =? "Firefox" <&&> resource /=? "Navigator"
     windowRole = stringProperty "WM_WINDOW_ROLE"
 
