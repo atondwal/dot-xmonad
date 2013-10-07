@@ -24,7 +24,6 @@ import           XMonad.Hooks.ManageHelpers
 import           XMonad.Layout.BoringWindows       (boringWindows, focusDown,
                                                     focusMaster, focusUp)
 import           XMonad.Layout.Fullscreen
-import           XMonad.Layout.LayoutModifier
 import           XMonad.Layout.Maximize
 import           XMonad.Layout.Minimize
 import           XMonad.Layout.Renamed
