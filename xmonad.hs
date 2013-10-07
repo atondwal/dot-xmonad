@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 import           XMonad
 import qualified XMonad.StackSet                   as W
 
