@@ -4,6 +4,7 @@ import qualified XMonad.StackSet                   as W
 
 import           Control.Applicative
 import           Control.Monad
+import           Data.List
 import qualified Data.Map                          as M
 import           System.Directory
 import           System.Exit
@@ -276,6 +277,7 @@ myManageHook = composeAll
   where
     chromePopupWindow = className =? "Google-chrome" <&&> windowRole =? "pop-up"
     minecraftWindow = className =? "net-minecraft-bootstrap-Bootstrap"
+                    <||> ("Minecraft" `isPrefixOf`) <$> title
     firefoxDialogs = className =? "Firefox" <&&> resource /=? "Navigator"
     windowRole = stringProperty "WM_WINDOW_ROLE"
 
