@@ -179,7 +179,10 @@ myKeys conf = mkKeymap conf $
     startEmacsDaemonPrompt xpc = do
         uid <- liftIO getRealUserID
         let socketDir = "/" </> "tmp" </> "emacs" ++ show uid
-        sessions <- liftIO $ filter (`notElem` [".", ".."]) <$> getDirectoryContents socketDir
+        exist <- liftIO $ doesDirectoryExist socketDir
+        sessions <- if exist
+            then liftIO $ filter (`notElem` [".", ".."]) <$> getDirectoryContents socketDir
+            else return []
         let complFun = mkComplFunFromList' sessions
         msession <- inputPromptWithCompl xpc "Emacs session" complFun
         case msession of
