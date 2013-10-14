@@ -194,11 +194,18 @@ loadWorkspaces =
     whenX (io $ doesFileExist sessionFile) $ do
         ws <- io $ fmap lines $ readFile sessionFile
         forM_ ws addWorkspace
+        spawn $ unwords [ "notify-send"
+                        , "xmonad"
+                        , "'Loaded " ++ show (length ws) ++ " workspaces.'"]
 
 saveWorkspaces :: X ()
 saveWorkspaces =
-    withWindowSet $ \ws ->
+    withWindowSet $ \ws -> do
         io $ writeFile sessionFile $ unlines $ map W.tag $ W.workspaces ws
+        spawn $ unwords [ "notify-send"
+                        , "xmonad"
+                        , "'Current workspaces have been saved.'"
+                        ]
 
 -- Modified version of `mergeDir' from XMonad.Layout.SubLayouts
 mergeDir' :: (W.Stack Window -> W.Stack Window) -> Window -> GroupMsg Window
