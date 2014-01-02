@@ -6,6 +6,7 @@ import           Control.Applicative
 import           Control.Monad
 import           Data.List
 import qualified Data.Map                          as M
+import           Data.Maybe
 import           System.Directory
 import           System.Exit
 import           System.FilePath
@@ -304,7 +305,7 @@ myEventHook = fullscreenEventHook
 myLogHook = return ()
 myBar = "xmobar"
 myPP = xmobarPP {
-        ppCurrent         = xmobarColor "white" "",
+        ppCurrent         = xmobarColor "red" "",
         ppVisible         = wrap "(" ")",
         ppHidden          = xmobarColor "#555555" "",
         ppHiddenNoWindows = xmobarColor "#555555" "",
@@ -315,7 +316,9 @@ myPP = xmobarPP {
     }
 myModifyPP pp = do
     copies <- wsContainingCopies
-    let check ws | ws `elem` copies = xmobarColor "#cccc00" "" $ ws
+    tagsWithWindows <- gets $ map W.tag . filter (isJust . W.stack) . W.workspaces . windowset
+    let check ws | ws `elem` copies = xmobarColor "#cccc00" "" ws
+                 | ws `elem` tagsWithWindows = xmobarColor "#cccccc" "" ws
                  | otherwise = ppHidden pp ws
     return pp { ppHidden = check }
 toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
