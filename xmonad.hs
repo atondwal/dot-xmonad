@@ -54,7 +54,7 @@ import           XMonad.Util.WorkspaceCompare
 -- Variables
 
 myTerminal           = "sakura --login"
-myEditor             = "emacsclient --alternate-editor='' --create-frame --no-wait"
+myEditor             = "emacs"
 myBrowser            = "firefox"
 myScreenLock         = "xscreensaver-command -lock"
 myFocusFollowsMouse  = False
