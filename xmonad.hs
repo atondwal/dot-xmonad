@@ -28,6 +28,7 @@ import           XMonad.Layout.BoringWindows       (boringWindows, focusDown,
 import           XMonad.Layout.Fullscreen
 import           XMonad.Layout.Maximize
 import           XMonad.Layout.Minimize
+import           XMonad.Layout.NoBorders
 import           XMonad.Layout.Renamed
 import           XMonad.Layout.Spiral
 import           XMonad.Layout.StackTile
@@ -254,7 +255,7 @@ myLayoutHook = modifier layouts
             ||| StackTile nmaster delta ratio
             ||| spiral (6/9)
             ||| renamed [CutWordsRight 1] (GridRatio $ 4/3)
-            ||| Full
+            ||| noBorders Full
      -- parameters
      nmaster = 1       -- The default number of windows in the master pane
      ratio   = 3/5     -- Default proportion of screen occupied by master pane
