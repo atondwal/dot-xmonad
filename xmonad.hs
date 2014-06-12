@@ -3,11 +3,13 @@ import           XMonad
 import qualified XMonad.StackSet                   as W
 
 import           Control.Applicative
+import           Control.Exception                 as E
 import           Control.Monad
 import           Data.List
 import qualified Data.Map                          as M
 import           Data.Maybe
 import           System.Directory
+import           System.Environment
 import           System.Exit
 import           System.FilePath
 import           System.IO
@@ -101,7 +103,7 @@ myKeys conf = mkKeymap conf $
     , ("M-w",   spawn myBrowser)
     , ("M-C-x", spawn myScreenLock)
     -- Prompts
-    , ("M-r",   shellPrompt =<< withHistMatch myXPConfig <$> initMatches)
+    , ("M-r",   shellPrompt' =<< withHistMatch myXPConfig <$> initMatches)
     , ("M-g",   windowPromptGoto      myXPConfig)
     , ("M-S-b", windowPromptBring     myXPConfig)
     , ("M-C-b", windowPromptBringCopy myXPConfig)
@@ -190,6 +192,25 @@ myKeys conf = mkKeymap conf $
         case msession of
             Nothing -> return ()
             Just session -> spawn $ "emacsclient --alternate-editor='' --create-frame --no-wait --socket-name='" ++ session ++ "'"
+
+shellPrompt' :: XPConfig -> X ()
+shellPrompt' c = do
+    cmds <- io getCommands'
+    mkXPrompt Shell c (getShellCompl cmds) spawn
+
+getCommands' :: IO [String]
+getCommands' = do
+    p  <- getEnv "PATH" `E.catch` econst []
+    let ds = filter (/= "") $ split ':' p
+    es <- forM ds $ \d -> do
+        exists <- doesDirectoryExist d `E.catch` econst False
+        if exists
+            then getDirectoryContents d `E.catch` econst []
+            else return []
+    return . uniqSort . filter ((/= '.') . head) . concat $ es
+  where
+    econst :: Monad m => a -> IOException -> m a
+    econst = const . return
 
 loadWorkspaces :: X ()
 loadWorkspaces =
