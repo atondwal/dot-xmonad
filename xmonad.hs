@@ -8,6 +8,8 @@ import           Control.Monad
 import           Data.List
 import qualified Data.Map                          as M
 import           Data.Maybe
+import           Data.Word                         (Word32)
+import           Foreign.C.Types                   (CLong)
 import           System.Directory
 import           System.Environment
 import           System.Exit
@@ -126,6 +128,8 @@ myKeys conf = mkKeymap conf $
     , ("M-f",   withFocused (sendMessage . maximizeRestore))
     , ("M-j",   withFocused minimizeWindow)
     , ("M-k",   sendMessage RestoreNextMinimizedWin)
+    , ("M-[",   withFocused $ fadeOut 0.1)
+    , ("M-]",   withFocused $ fadeIn 0.1)
     -- Layout
     , ("M-<Space>",   sendMessage NextLayout)
     , ("M-S-<Space>", setLayout $ XMonad.layoutHook conf)  --  Reset the layouts on the current workspace to default
@@ -211,6 +215,39 @@ getCommands' = do
   where
     econst :: Monad m => a -> IOException -> m a
     econst = const . return
+
+rationalToOpacity :: Integral a => Rational -> a
+rationalToOpacity r = round $ r * 0xffffffff
+
+setOpacity :: Rational -> Window -> X ()
+setOpacity r w = withDisplay $ \dpy -> do
+    a <- getAtom "_NET_WM_WINDOW_OPACITY"
+    c <- getAtom "CARDINAL"
+    io $ changeProperty32 dpy w a c propModeReplace [rationalToOpacity r]
+
+opacityToRational :: Integral a => a -> Rational
+opacityToRational opacity = fromIntegral opacity / 0xffffffff
+
+getOpacity :: Window -> X Rational
+getOpacity w = withDisplay $ \dpy -> do
+    a <- getAtom "_NET_WM_WINDOW_OPACITY"
+    mval <- io $ getWindowProperty32 dpy a w
+    return $ maybe 1 (opacityToRational . asUnsigned . head) mval
+  where
+    asUnsigned :: CLong -> Word32
+    asUnsigned = fromIntegral
+
+updateOpacity :: (Rational -> Rational) -> Window -> X ()
+updateOpacity f w = do
+    r <- getOpacity w
+    let r' = max 0 $ min 1 $ f r
+    setOpacity r' w
+
+fadeOut :: Rational -> Window -> X ()
+fadeOut d = updateOpacity (subtract d)
+
+fadeIn :: Rational -> Window -> X ()
+fadeIn d = updateOpacity (+ d)
 
 loadWorkspaces :: X ()
 loadWorkspaces =
