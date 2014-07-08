@@ -301,7 +301,7 @@ myLayoutHook = modifier layouts
      -- layout modifiers
      modifier = renamed [CutWordsLeft 3]
               . fullscreenFloat
-              . fullscreenFull
+              . fullscreenFocus
               . configurableNavigation noNavigateBorders
               . mySubTabbed
               . maximize
