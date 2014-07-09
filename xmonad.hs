@@ -34,6 +34,7 @@ import           XMonad.Layout.Maximize
 import           XMonad.Layout.Minimize
 import           XMonad.Layout.NoBorders
 import           XMonad.Layout.Renamed
+import           XMonad.Layout.Spacing
 import           XMonad.Layout.Spiral
 import           XMonad.Layout.StackTile
 import           XMonad.Layout.SubLayouts
@@ -302,6 +303,7 @@ myLayoutHook = modifier layouts
      modifier = renamed [CutWordsLeft 3]
               . fullscreenFloat
               . fullscreenFocus
+              . smartSpacing 4
               . configurableNavigation noNavigateBorders
               . mySubTabbed
               . maximize
