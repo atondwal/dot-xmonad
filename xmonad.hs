@@ -300,7 +300,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList
 myLayoutHook = modifier layouts
   where
      -- layout modifiers
-     modifier = renamed [CutWordsLeft 3]
+     modifier = renamed [CutWordsLeft 5]
               . fullscreenFloat
               . fullscreenFocus
               . smartSpacing 4
