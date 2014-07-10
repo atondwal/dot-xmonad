@@ -131,6 +131,7 @@ myKeys conf = mkKeymap conf $
     , ("M-k",   sendMessage RestoreNextMinimizedWin)
     , ("M-[",   withFocused $ fadeOut 0.1)
     , ("M-]",   withFocused $ fadeIn 0.1)
+    , ("M-=",   withFocused $ setOpacity (0xfffffffe / 0xffffffff))
     -- Layout
     , ("M-<Space>",   sendMessage NextLayout)
     , ("M-S-<Space>", setLayout $ XMonad.layoutHook conf)  --  Reset the layouts on the current workspace to default
