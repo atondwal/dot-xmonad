@@ -263,7 +263,9 @@ loadWorkspaces =
 saveWorkspaces :: X ()
 saveWorkspaces =
     withWindowSet $ \ws -> do
-        io $ writeFile sessionFile $ unlines $ map W.tag $ W.workspaces ws
+        io $ do
+            copyFile sessionFile (sessionFile ++ ".bak")
+            writeFile sessionFile $ unlines $ map W.tag $ W.workspaces ws
         spawn $ unwords [ "notify-send"
                         , "xmonad"
                         , "'Current workspaces have been saved.'"
