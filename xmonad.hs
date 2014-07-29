@@ -346,6 +346,7 @@ myManageHook = composeAll
     , className  =? "fontforge"          --> doFloat
     , className  =? "Xmessage"           --> doFloat
     , className  =? "Qemu-system-x86_64" --> doFloat
+    , className  =? "Remote-viewer"      --> doFloat
     , chromePopupWindow                  --> doFloat
     , minecraftWindow                    --> doFloat
     , firefoxDialogs                     --> doFloat
