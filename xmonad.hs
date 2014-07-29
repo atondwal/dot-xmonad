@@ -332,23 +332,24 @@ myLayoutHook = modifier layouts
 -- The 'xprop' utility is helpful for obtaining window's properties.
 myManageHook = composeAll
     [ fullscreenManageHook
-    , resource   =? "desktop_window"  --> doIgnore
-    , resource   =? "kdesktop"        --> doIgnore
-    , className  =? "MPlayer"         --> doFloat
-    , className  =? "Gnome-mplayer"   --> doFloat
-    , className  =? "Gimp"            --> doFloat
-    , className  =? "Gimp-2.6"        --> doFloat
-    , className  =? "Audacious"       --> doFloat
-    , className  =? "Uim-pref-gtk"    --> doFloat
-    , className  =? "Pidgin"          --> doFloat
-    , className  =? "Skype"           --> doFloat
-    , className  =? "Mikutter.rb"     --> doFloat
-    , className  =? "fontforge"       --> doFloat
-    , className  =? "Xmessage"        --> doFloat
-    , chromePopupWindow               --> doFloat
-    , minecraftWindow                 --> doFloat
-    , firefoxDialogs                  --> doFloat
-    , isDialog                        --> doCenterFloat
+    , resource   =? "desktop_window"     --> doIgnore
+    , resource   =? "kdesktop"           --> doIgnore
+    , className  =? "MPlayer"            --> doFloat
+    , className  =? "Gnome-mplayer"      --> doFloat
+    , className  =? "Gimp"               --> doFloat
+    , className  =? "Gimp-2.6"           --> doFloat
+    , className  =? "Audacious"          --> doFloat
+    , className  =? "Uim-pref-gtk"       --> doFloat
+    , className  =? "Pidgin"             --> doFloat
+    , className  =? "Skype"              --> doFloat
+    , className  =? "Mikutter.rb"        --> doFloat
+    , className  =? "fontforge"          --> doFloat
+    , className  =? "Xmessage"           --> doFloat
+    , className  =? "Qemu-system-x86_64" --> doFloat
+    , chromePopupWindow                  --> doFloat
+    , minecraftWindow                    --> doFloat
+    , firefoxDialogs                     --> doFloat
+    , isDialog                           --> doCenterFloat
     ]
   where
     chromePopupWindow = className =? "Google-chrome" <&&> windowRole =? "pop-up"
