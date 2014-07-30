@@ -306,9 +306,9 @@ myLayoutHook = modifier layouts
      modifier = renamed [CutWordsLeft 5]
               . fullscreenFloat
               . fullscreenFocus
+              . mySubTabbed
               . smartSpacing 4
               . configurableNavigation noNavigateBorders
-              . mySubTabbed
               . maximize
               . minimize
               . boringWindows
