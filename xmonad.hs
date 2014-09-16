@@ -30,6 +30,7 @@ import           XMonad.Hooks.ManageHelpers
 import           XMonad.Layout.BoringWindows       (boringWindows, focusDown,
                                                     focusMaster, focusUp)
 import           XMonad.Layout.Fullscreen
+import           XMonad.Layout.LayoutHints
 import           XMonad.Layout.Maximize
 import           XMonad.Layout.Minimize
 import           XMonad.Layout.NoBorders
@@ -303,7 +304,8 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList
 myLayoutHook = modifier layouts
   where
      -- layout modifiers
-     modifier = renamed [CutWordsLeft 5]
+     modifier = renamed [CutWordsLeft 6]
+              . layoutHints
               . fullscreenFloat
               . fullscreenFocus
               . mySubTabbed
@@ -363,7 +365,7 @@ myManageHook = composeAll
 ------------------------------------------------------------------------
 -- Event handling
 
-myEventHook = fullscreenEventHook
+myEventHook = hintsEventHook <+> fullscreenEventHook
 
 
 ------------------------------------------------------------------------
