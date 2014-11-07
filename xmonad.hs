@@ -378,8 +378,9 @@ myPP = xmobarPP {
         ppHidden          = xmobarColor "#555555" "",
         ppHiddenNoWindows = xmobarColor "#555555" "",
         ppUrgent          = xmobarColor "ff0066" "",
-        ppSep             = "  :  ",
-        ppTitle           = xmobarColor "#00ccff" "" . shorten 50,
+        ppSep             = " | ",
+        ppWsSep           = " ",
+        ppTitle           = xmobarColor "#00ccff" "",
         ppLayout          = xmobarColor "white" ""
     }
 myModifyPP pp = do
