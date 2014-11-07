@@ -309,7 +309,7 @@ myLayoutHook = modifier layouts
               . fullscreenFloat
               . fullscreenFocus
               . mySubTabbed
-              . smartSpacing 4
+              . spacing 4
               . configurableNavigation noNavigateBorders
               . maximize
               . minimize
