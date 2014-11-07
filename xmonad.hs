@@ -349,13 +349,12 @@ myManageHook = composeAll
     , className  =? "Xmessage"           --> doFloat
     , className  =? "Qemu-system-x86_64" --> doFloat
     , className  =? "Remote-viewer"      --> doFloat
-    , chromePopupWindow                  --> doFloat
+    , windowRole =? "pop-up"             --> doFloat
     , minecraftWindow                    --> doFloat
     , firefoxDialogs                     --> doFloat
     , isDialog                           --> doCenterFloat
     ]
   where
-    chromePopupWindow = className =? "Google-chrome" <&&> windowRole =? "pop-up"
     minecraftWindow = className =? "net-minecraft-bootstrap-Bootstrap"
                     <||> ("Minecraft" `isPrefixOf`) <$> title
     firefoxDialogs = className =? "Firefox" <&&> resource /=? "Navigator"
