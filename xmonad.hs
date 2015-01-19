@@ -106,6 +106,8 @@ myKeys conf = mkKeymap conf $
     , ("M-S-e", startEmacsDaemonPrompt myXPConfig { autoComplete = Nothing })
     , ("M-w",   spawn myBrowser)
     , ("M-C-x", spawn myScreenLock)
+    , ("M-<Print>", spawn "scrot screen_%Y-%m-%d-%H-%M-%S.png")
+    , ("M-C-<Print>", spawn "scrot window_%Y-%m-%d-%H-%M-%S.png -u")
     -- Prompts
     , ("M-r",   shellPrompt' =<< withHistMatch myXPConfig <$> initMatches)
     , ("M-g",   windowPromptGoto      myXPConfig)
