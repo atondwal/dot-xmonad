@@ -65,11 +65,11 @@ myBrowser            = "firefox"
 myScreenLock         = "xscreensaver-command -lock"
 myFocusFollowsMouse  = False
 myClickJustFocuses   = False
-myBorderWidth        = 0
+myBorderWidth        = 4
 myModMask            = mod4Mask
 myWorkspaces         = ["*"]
-myNormalBorderColor  = "#dddddd"
-myFocusedBorderColor = "#ff0000"
+myNormalBorderColor  = "#272727"
+myFocusedBorderColor = "#41c0ff"
 myXPKeymap           = myXPKeymap' `M.union` defaultXPKeymap
     where
         myXPKeymap' = M.fromList $
