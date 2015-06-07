@@ -69,7 +69,7 @@ myBorderWidth        = 4
 myModMask            = mod4Mask
 myWorkspaces         = ["*"]
 myNormalBorderColor  = "#272727"
-myFocusedBorderColor = "#41c0ff"
+myFocusedBorderColor = "#272727"
 myXPKeymap           = myXPKeymap' `M.union` defaultXPKeymap
     where
         myXPKeymap' = M.fromList $
