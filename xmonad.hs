@@ -340,6 +340,7 @@ myManageHook = composeAll
     [ fullscreenManageHook
     , resource   =? "desktop_window"     --> doIgnore
     , resource   =? "kdesktop"           --> doIgnore
+    , className  =? "Xfce4-notifyd"      --> doIgnore
     , className  =? "MPlayer"            --> doFloat
     , className  =? "Gnome-mplayer"      --> doFloat
     , className  =? "Gimp"               --> doFloat
