@@ -385,7 +385,7 @@ myPP = xmobarPP {
         ppHiddenNoWindows = xmobarColor "#555555" "",
         ppUrgent          = xmobarColor "ff0066" "",
         ppSep             = " | ",
-        ppWsSep           = " ",
+        ppWsSep           = "  ",
         ppTitle           = xmobarColor "#00ccff" "",
         ppLayout          = xmobarColor "white" ""
     }
