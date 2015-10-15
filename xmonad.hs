@@ -60,7 +60,7 @@ import           XMonad.Util.WorkspaceCompare
 ------------------------------------------------------------------------
 -- Variables
 
-myTerminal           = "sakura --login"
+myTerminal           = "urxvt"
 myEditor             = "emacs"
 myBrowser            = "firefox"
 myScreenLock         = "xscreensaver-command -lock"
