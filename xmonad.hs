@@ -312,6 +312,7 @@ myLayoutHook = modifier layouts
               . layoutHints
               . fullscreenFloat
               . fullscreenFocus
+              . avoidStruts
               . mySubTabbed
               . spacing 4
               . smartBorders
@@ -401,8 +402,7 @@ toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
 statusBar' cmd pp modifyPP k conf = do
     h <- spawnPipe cmd
     return $ conf
-        { layoutHook = avoidStruts (layoutHook conf)
-        , logHook = do
+        { logHook = do
             logHook conf
             pp' <- modifyPP pp
             dynamicLogWithPP pp' { ppOutput = hPutStrLn h }
