@@ -69,7 +69,7 @@ myClickJustFocuses   = False
 myBorderWidth        = 4
 myModMask            = mod4Mask
 myWorkspaces         = ["*"]
-myNormalBorderColor  = "#272727"
+myNormalBorderColor  = "#000000"
 myFocusedBorderColor = "#272727"
 myXPKeymap           = myXPKeymap' `M.union` defaultXPKeymap
     where
