@@ -128,7 +128,7 @@ myKeys conf = mkKeymap conf $
     , ("M-C-l", loadWorkspaces)
     , ("M-C-s", saveWorkspaces)
     -- Window manipulations
-    , ("M-C-c", kill1)
+    , ("M-C-c", kill1 >> focusDown)
     , ("M-C-S-c", killAllOtherCopies >> kill1)
     , ("M-t",   withFocused $ windows . W.sink)  -- Push window back into tiling
     , ("M-f",   withFocused (sendMessage . maximizeRestore))
