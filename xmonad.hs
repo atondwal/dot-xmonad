@@ -25,6 +25,7 @@ import qualified XMonad.Actions.FlexibleManipulate as Flex
 import           XMonad.Actions.FloatSnap
 
 import           XMonad.Hooks.DynamicLog
+import           XMonad.Hooks.EwmhDesktops          (ewmh)
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Hooks.ManageHelpers
 
@@ -422,7 +423,7 @@ myStartupHook = return ()
 ------------------------------------------------------------------------
 -- Run xmonad
 
-main = xmonad =<< statusBar' myBar myPP myModifyPP toggleStrutsKey myConfig
+main = xmonad =<< statusBar' myBar myPP myModifyPP toggleStrutsKey (ewmh myConfig)
 
 myConfig = defaultConfig {
       -- simple stuff
