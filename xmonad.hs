@@ -379,7 +379,7 @@ myEventHook = hintsEventHook <+> fullscreenEventHook
 -- Status bars and logging
 
 myLogHook = return ()
-myBar = "xmobar"
+myBar = "LANG=ja_JP.UTF-8 xmobar"
 myPP = xmobarPP {
         ppCurrent         = xmobarColor "#ff0066" "",
         ppVisible         = wrap "(" ")",
