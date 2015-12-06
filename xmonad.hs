@@ -380,22 +380,22 @@ myEventHook = hintsEventHook <+> fullscreenEventHook
 myLogHook = return ()
 myBar = "LANG=ja_JP.UTF-8 xmobar"
 myPP = xmobarPP {
-        ppCurrent         = xmobarColor "#ff0066" "",
+        ppCurrent         = xmobarColor "#1f2329" "#e4c374" . wrap " " " ",
         ppVisible         = wrap "(" ")",
-        ppHidden          = xmobarColor "#555555" "",
-        ppHiddenNoWindows = xmobarColor "#555555" "",
-        ppUrgent          = xmobarColor "ff0066" "",
-        ppSep             = " | ",
-        ppWsSep           = "  ",
-        ppTitle           = xmobarColor "#00ccff" "",
-        ppLayout          = xmobarColor "white" ""
+        ppHidden          = xmobarColor "#aeb8c5" "" . wrap " " " ",
+        ppHiddenNoWindows = xmobarColor "#626972" "" . wrap " " " ",
+        ppUrgent          = xmobarColor "#ffffff" "#b05353" . wrap " " " ",
+        ppSep             = "  ",
+        ppWsSep           = "",
+        ppTitle           = xmobarColor "#ecf4ff" "" . wrap " " " ",
+        ppLayout          = xmobarColor "#1f2329" "#887cb2" . wrap " " " "
     }
 myModifyPP pp = do
-    copies <- wsContainingCopies
-    tagsWithWindows <- gets $ map W.tag . filter (isJust . W.stack) . W.workspaces . windowset
-    let check ws | ws `elem` copies = xmobarColor "#cccc00" "" ws
-                 | ws `elem` tagsWithWindows = xmobarColor "#cccccc" "" ws
-                 | otherwise = ppHidden pp ws
+    wsWithCopies <- wsContainingCopies
+    wsWithWindows <- gets $ map W.tag . filter (isJust . W.stack) . W.workspaces . windowset
+    let check ws | ws `elem` wsWithCopies = xmobarColor "#88b8b0" "" ws
+                 | ws `elem` wsWithWindows = ppHidden pp ws
+                 | otherwise = ppHiddenNoWindows pp ws
     return pp { ppHidden = check }
 toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
 
