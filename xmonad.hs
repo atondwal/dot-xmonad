@@ -66,7 +66,7 @@ myBrowser            = "firefox"
 myScreenLock         = "xscreensaver-command -lock"
 myFocusFollowsMouse  = False
 myClickJustFocuses   = False
-myBorderWidth        = 4
+myBorderWidth        = 0
 myModMask            = mod4Mask
 myWorkspaces         = ["*"]
 myNormalBorderColor  = "#000000"
@@ -87,6 +87,7 @@ myXPConfig = defaultXPConfig {
         font          = "xft:M+ 1c:size=9",
         promptKeymap  = myXPKeymap,
         height        = 24,
+        promptBorderWidth = 0,
         historyFilter = deleteAllDuplicates,
         autoComplete  = Just 500000
     }
