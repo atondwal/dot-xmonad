@@ -17,6 +17,7 @@ import           System.Exit
 import           System.FilePath
 import           System.IO
 import           System.Posix.User
+import           Graphics.X11.ExtraTypes.XF86
 
 import           XMonad.Actions.CopyWindow
 import           XMonad.Actions.CycleWS
@@ -110,6 +111,11 @@ myKeys conf = mkKeymap conf $
     , ("M-C-x", spawn myScreenLock)
     , ("M-<Print>", spawn "scrot screen_%Y-%m-%d-%H-%M-%S.png")
     , ("M-C-<Print>", spawn "scrot window_%Y-%m-%d-%H-%M-%S.png -u")
+    , ("<XF86MonBrightnessUp>",   spawn "xbacklight + 10")
+    , ("<XF86MonBrightnessDown>", spawn "xbacklight - 10")
+    , ("<XF86AudioLowerVolume>",  spawn "pactl set-sink-volume @DEFAULT_SINK@ -5%")
+    , ("<XF86AudioRaiseVolume>",  spawn "pactl set-sink-volume @DEFAULT_SINK@ +5%")
+    , ("<XF86AudioMute>",         spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
     -- Prompts
     , ("M-r",   shellPrompt' =<< withHistMatch myXPConfig <$> initMatches)
     , ("M-g",   windowPromptGoto      myXPConfig)
