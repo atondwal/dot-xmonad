@@ -65,6 +65,7 @@ myTerminal           = "urxvt"
 myEditor             = "emacs"
 myBrowser            = "firefox"
 myScreenLock         = "xscreensaver-command -lock"
+myScreenOff          = "xset dpms force off"
 myFocusFollowsMouse  = False
 myClickJustFocuses   = False
 myBorderWidth        = 0
@@ -109,6 +110,7 @@ myKeys conf = mkKeymap conf $
     , ("M-S-e", startEmacsDaemonPrompt myXPConfig { autoComplete = Nothing })
     , ("M-w",   spawn myBrowser)
     , ("M-C-x", spawn myScreenLock)
+    , ("M-C-o", spawn myScreenOff)
     , ("M-<Print>", spawn "scrot screen_%Y-%m-%d-%H-%M-%S.png")
     , ("M-C-<Print>", spawn "scrot window_%Y-%m-%d-%H-%M-%S.png -u")
     , ("<XF86MonBrightnessUp>",   spawn "xbacklight + 10")
