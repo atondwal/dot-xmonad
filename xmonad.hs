@@ -46,6 +46,7 @@ import           XMonad.Layout.OneBig
 import           XMonad.Layout.GridVariants hiding (Orientation(..))
 import qualified XMonad.Layout.GridVariants as Orientation (Orientation(..))
 import           XMonad.Layout.ThreeColumns
+import           XMonad.Layout.Circle
 
 import           XMonad.Layout.Grid
 import           XMonad.Layout.Simplest
@@ -339,6 +340,7 @@ myLayoutHook = modifier layouts
      -- layouts
      layouts =  renamed [CutWordsRight 2] (OneBig (1/2) (3/5))
             ||| SplitGrid Orientation.L 1 1 masterRatio aspectRatio resizeDelta
+            ||| Circle
             ||| ThreeColMid nmaster resizeDelta (3/7)
             ||| Tall nmaster resizeDelta masterRatio
             ||| Mirror (Tall nmaster resizeDelta masterRatio)
