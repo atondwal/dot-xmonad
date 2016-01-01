@@ -23,10 +23,10 @@ import           XMonad.Actions.CopyWindow
 import           XMonad.Actions.CycleWS
 import           XMonad.Actions.DynamicWorkspaces
 import qualified XMonad.Actions.FlexibleManipulate as Flex
-import           XMonad.Actions.FloatSnap
+import           XMonad.Actions.FloatSnap hiding (Direction2D(..))
 
 import           XMonad.Hooks.DynamicLog
-import           XMonad.Hooks.ManageDocks
+import           XMonad.Hooks.ManageDocks   hiding (Direction2D(..))
 import           XMonad.Hooks.ManageHelpers
 
 import           XMonad.Layout.BoringWindows       (boringWindows, focusDown,
@@ -41,7 +41,11 @@ import           XMonad.Layout.Spacing
 import           XMonad.Layout.Spiral
 import           XMonad.Layout.StackTile
 import           XMonad.Layout.SubLayouts
-import           XMonad.Layout.WindowNavigation
+import           XMonad.Layout.WindowNavigation   hiding (Direction2D(..))
+import           XMonad.Layout.OneBig
+import           XMonad.Layout.GridVariants hiding (Orientation(..))
+import qualified XMonad.Layout.GridVariants as Orientation (Orientation(..))
+import           XMonad.Layout.ThreeColumns
 
 import           XMonad.Layout.Grid
 import           XMonad.Layout.Simplest
@@ -55,6 +59,8 @@ import           XMonad.Prompt.Window
 
 import           XMonad.Util.EZConfig
 import           XMonad.Util.Run
+import qualified XMonad.Util.Types (Direction2D)
+import qualified XMonad.Util.Types as Dir2D (Direction2D(..))
 import           XMonad.Util.WorkspaceCompare
 
 
@@ -172,14 +178,14 @@ myKeys conf = mkKeymap conf $
     , ("M-S-h", sendMessage (IncMasterN 1))
     , ("M-S-l", sendMessage (IncMasterN (-1)))
     -- Floating windows
-    , ("M-<Left>",    withFocused $ snapMove   L Nothing)
-    , ("M-<Right>",   withFocused $ snapMove   R Nothing)
-    , ("M-<Up>",      withFocused $ snapMove   U Nothing)
-    , ("M-<Down>",    withFocused $ snapMove   D Nothing)
-    , ("M-S-<Left>",  withFocused $ snapShrink R Nothing)
-    , ("M-S-<Right>", withFocused $ snapGrow   R Nothing)
-    , ("M-S-<Up>",    withFocused $ snapShrink D Nothing)
-    , ("M-S-<Down>",  withFocused $ snapGrow   D Nothing)
+    , ("M-<Left>",    withFocused $ snapMove   Dir2D.L Nothing)
+    , ("M-<Right>",   withFocused $ snapMove   Dir2D.R Nothing)
+    , ("M-<Up>",      withFocused $ snapMove   Dir2D.U Nothing)
+    , ("M-<Down>",    withFocused $ snapMove   Dir2D.D Nothing)
+    , ("M-S-<Left>",  withFocused $ snapShrink Dir2D.R Nothing)
+    , ("M-S-<Right>", withFocused $ snapGrow   Dir2D.R Nothing)
+    , ("M-S-<Up>",    withFocused $ snapShrink Dir2D.D Nothing)
+    , ("M-S-<Down>",  withFocused $ snapGrow   Dir2D.D Nothing)
     -- Controling xmonad
     , ("M-C-q", io exitSuccess)
     , ("M-C-r", spawn "xmonad --recompile; xmonad --restart")
@@ -331,16 +337,20 @@ myLayoutHook = modifier layouts
               . boringWindows
      mySubTabbed x = addTabs shrinkText myTheme $ subLayout [] Simplest x
      -- layouts
-     layouts =  Tall nmaster delta ratio
-            ||| Mirror (Tall nmaster delta ratio)
-            ||| StackTile nmaster delta ratio
+     layouts =  renamed [CutWordsRight 2] (OneBig (1/2) (3/5))
+            ||| SplitGrid Orientation.L 1 1 masterRatio aspectRatio resizeDelta
+            ||| ThreeColMid nmaster resizeDelta (3/7)
+            ||| Tall nmaster resizeDelta masterRatio
+            ||| Mirror (Tall nmaster resizeDelta masterRatio)
+            ||| StackTile nmaster resizeDelta masterRatio
             ||| spiral (6/9)
-            ||| renamed [CutWordsRight 1] (GridRatio $ 4/3)
+            ||| renamed [CutWordsRight 1] (GridRatio $ fromRational aspectRatio)
             ||| noBorders Full
      -- parameters
-     nmaster = 1       -- The default number of windows in the master pane
-     ratio   = 3/5     -- Default proportion of screen occupied by master pane
-     delta   = 3/100   -- Percent of screen to increment by when resizing panes
+     nmaster     = 1     :: Int
+     masterRatio = 3/5   :: Rational
+     aspectRatio = 4/3   :: Rational
+     resizeDelta = 3/100 :: Rational
 
 
 ------------------------------------------------------------------------
