@@ -337,15 +337,15 @@ myLayoutHook = modifier layouts
               . boringWindows
      mySubTabbed x = addTabs shrinkText myTheme $ subLayout [] Simplest x
      -- layouts
-     layouts =  renamed [CutWordsRight 2] (OneBig (1/2) (3/5))
-            ||| SplitGrid Orientation.L 1 1 masterRatio aspectRatio resizeDelta
+     layouts =  renamed [CutWordsRight 2] (Mirror $ OneBig (3/5) (1/2))
+            ||| Mirror (SplitGrid Orientation.T 1 1 masterRatio (recip aspectRatio) resizeDelta)
             ||| Circle
             ||| ThreeColMid nmaster resizeDelta (3/7)
             ||| Tall nmaster resizeDelta masterRatio
             ||| Mirror (Tall nmaster resizeDelta masterRatio)
             ||| StackTile nmaster resizeDelta masterRatio
             ||| spiral (6/9)
-            ||| renamed [CutWordsRight 1] (GridRatio $ fromRational aspectRatio)
+            ||| renamed [CutWordsRight 1] (Mirror $ GridRatio $ fromRational $ recip aspectRatio)
             ||| noBorders Full
      -- parameters
      nmaster     = 1     :: Int
