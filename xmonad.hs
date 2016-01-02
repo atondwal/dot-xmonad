@@ -343,7 +343,6 @@ myLayoutHook = modifier layouts
             ||| ThreeColMid nmaster resizeDelta (3/7)
             ||| Tall nmaster resizeDelta masterRatio
             ||| Mirror (Tall nmaster resizeDelta masterRatio)
-            ||| StackTile nmaster resizeDelta masterRatio
             ||| spiral (6/9)
             ||| renamed [CutWordsRight 1] (Mirror $ GridRatio $ fromRational $ recip aspectRatio)
             ||| noBorders Full
