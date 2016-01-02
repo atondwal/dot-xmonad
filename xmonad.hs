@@ -3,56 +3,38 @@
 import           XMonad
 import qualified XMonad.StackSet                   as W
 
-import           Control.Applicative
-import           Control.Exception                 as E
-import           Control.Monad
-import           Data.List
-import qualified Data.Map                          as M
-import           Data.Maybe
-import           Data.Word                         (Word32)
-import           Foreign.C.Types                   (CLong)
-import           System.Directory
-import           System.Environment
-import           System.Exit
-import           System.FilePath
-import           System.IO
-import           System.Posix.User
-import           Graphics.X11.ExtraTypes.XF86
-
 import           XMonad.Actions.CopyWindow
 import           XMonad.Actions.CycleWS
 import           XMonad.Actions.DynamicWorkspaces
 import qualified XMonad.Actions.FlexibleManipulate as Flex
-import           XMonad.Actions.FloatSnap hiding (Direction2D(..))
+import           XMonad.Actions.FloatSnap          hiding (Direction2D (..))
 
 import           XMonad.Hooks.DynamicLog
-import           XMonad.Hooks.ManageDocks   hiding (Direction2D(..))
+import           XMonad.Hooks.ManageDocks          hiding (Direction2D (..))
 import           XMonad.Hooks.ManageHelpers
 
 import           XMonad.Layout.BoringWindows       (boringWindows, focusDown,
                                                     focusMaster, focusUp)
+import           XMonad.Layout.Circle
 import           XMonad.Layout.Fullscreen
+import           XMonad.Layout.Grid
+import           XMonad.Layout.GridVariants        hiding (Orientation (..))
+import qualified XMonad.Layout.GridVariants        as Orientation (Orientation (..))
 import           XMonad.Layout.LayoutHints
 import           XMonad.Layout.Maximize
 import           XMonad.Layout.Minimize
 import           XMonad.Layout.NoBorders
+import           XMonad.Layout.OneBig
 import           XMonad.Layout.Renamed
+import           XMonad.Layout.Simplest
 import           XMonad.Layout.Spacing
 import           XMonad.Layout.Spiral
 import           XMonad.Layout.StackTile
 import           XMonad.Layout.SubLayouts
-import           XMonad.Layout.WindowNavigation   hiding (Direction2D(..))
-import           XMonad.Layout.OneBig
-import           XMonad.Layout.GridVariants hiding (Orientation(..))
-import qualified XMonad.Layout.GridVariants as Orientation (Orientation(..))
-import           XMonad.Layout.ThreeColumns
-import           XMonad.Layout.Circle
-
-import           XMonad.Layout.Grid
-import           XMonad.Layout.Simplest
 import           XMonad.Layout.Tabbed
+import           XMonad.Layout.ThreeColumns
+import           XMonad.Layout.WindowNavigation    hiding (Direction2D (..))
 
-import           Control.Arrow                     (first)
 import           XMonad.Prompt
 import           XMonad.Prompt.Input
 import           XMonad.Prompt.Shell
@@ -60,9 +42,26 @@ import           XMonad.Prompt.Window
 
 import           XMonad.Util.EZConfig
 import           XMonad.Util.Run
-import qualified XMonad.Util.Types (Direction2D)
-import qualified XMonad.Util.Types as Dir2D (Direction2D(..))
+import qualified XMonad.Util.Types                 (Direction2D)
+import qualified XMonad.Util.Types                 as Dir2D (Direction2D (..))
 import           XMonad.Util.WorkspaceCompare
+
+import           Control.Applicative
+import           Control.Arrow                     (first)
+import           Control.Exception                 as E
+import           Control.Monad
+import           Data.List
+import qualified Data.Map                          as M
+import           Data.Maybe
+import           Data.Word                         (Word32)
+import           Foreign.C.Types                   (CLong)
+import           Graphics.X11.ExtraTypes.XF86
+import           System.Directory
+import           System.Environment
+import           System.Exit
+import           System.FilePath
+import           System.IO
+import           System.Posix.User
 
 
 ------------------------------------------------------------------------
