@@ -222,7 +222,7 @@ myKeys conf = mkKeymap conf $
 shellPrompt' :: XPConfig -> X ()
 shellPrompt' c = do
     cmds <- io getCommands'
-    mkXPrompt Shell c (getShellCompl cmds) spawn
+    mkXPrompt Shell c (getShellCompl cmds $ searchPredicate c) spawn
 
 getCommands' :: IO [String]
 getCommands' = do
