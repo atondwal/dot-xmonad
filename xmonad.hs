@@ -275,7 +275,7 @@ fadeIn d = updateOpacity (+ d)
 loadWorkspaces :: X ()
 loadWorkspaces =
     whenX (io $ doesFileExist sessionFile) $ do
-        ws <- io $ fmap lines $ readFile sessionFile
+        ws <- io $ lines <$> readFile sessionFile
         forM_ ws addWorkspace
         spawn $ unwords [ "notify-send"
                         , "xmonad"
@@ -309,7 +309,7 @@ mergeDir' f = WithGroup g
 ------------------------------------------------------------------------
 -- Mouse bindings
 
-myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList
+myMouseBindings XConfig {XMonad.modMask = modm} = M.fromList
     [ ((modm, button1), \w -> focus w >> mouseMoveWindow w
                                       >> windows W.shiftMaster)
     , ((modm, button2), \w -> focus w >> windows W.shiftMaster)
