@@ -1,6 +1,6 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
-import           XMonad
+import           XMonad                            hiding ((|||))
 import qualified XMonad.StackSet                   as W
 
 import           XMonad.Actions.CopyWindow
@@ -20,6 +20,7 @@ import           XMonad.Layout.Fullscreen
 import           XMonad.Layout.Grid
 import           XMonad.Layout.GridVariants        hiding (Orientation (..))
 import qualified XMonad.Layout.GridVariants        as Orientation (Orientation (..))
+import           XMonad.Layout.LayoutCombinators
 import           XMonad.Layout.LayoutHints
 import           XMonad.Layout.Maximize
 import           XMonad.Layout.Minimize
@@ -50,6 +51,7 @@ import           Control.Applicative
 import           Control.Arrow                     (first)
 import           Control.Exception                 as E
 import           Control.Monad
+import           Data.Char                         (toLower)
 import           Data.List
 import qualified Data.Map                          as M
 import           Data.Maybe
@@ -153,7 +155,7 @@ myKeys conf = mkKeymap conf $
     , ("M-]",   withFocused $ fadeIn 0.1)
     , ("M-=",   withFocused $ setOpacity (0xfffffffe / 0xffffffff))
     -- Layout
-    , ("M-<Space>",   sendMessage NextLayout)
+    , ("M-<Space>", inputPromptWithCompl  myXPConfig "Layout" (mkComplFunFromListIgnoreCase' myLayoutNames) ?+ (sendMessage . JumpToLayout))
     , ("M-S-<Space>", setLayout $ XMonad.layoutHook conf)  --  Reset the layouts on the current workspace to default
     -- Moving the focus
     , ("M-<Return>", focusMaster)
@@ -218,6 +220,13 @@ myKeys conf = mkKeymap conf $
         case msession of
             Nothing -> return ()
             Just session -> spawn $ "emacsclient --alternate-editor='' --create-frame --no-wait --socket-name='" ++ session ++ "'"
+
+mkComplFunFromListIgnoreCase' :: [String] -> String -> IO [String]
+mkComplFunFromListIgnoreCase' l [] = return l
+mkComplFunFromListIgnoreCase' l s =
+    return $ filter ((s' `isPrefixOf`) . map toLower) l
+  where
+    s' = map toLower s
 
 shellPrompt' :: XPConfig -> X ()
 shellPrompt' c = do
@@ -337,20 +346,31 @@ myLayoutHook = modifier layouts
               . boringWindows
      mySubTabbed x = addTabs shrinkText myTheme $ subLayout [] Simplest x
      -- layouts
-     layouts =  renamed [CutWordsRight 2] (Mirror $ OneBig (3/5) (1/2))
-            ||| Mirror (SplitGrid Orientation.T 1 1 masterRatio (recip aspectRatio) resizeDelta)
-            ||| Circle
-            ||| ThreeColMid nmaster resizeDelta (3/7)
-            ||| Tall nmaster resizeDelta masterRatio
-            ||| Mirror (Tall nmaster resizeDelta masterRatio)
-            ||| spiral (6/9)
-            ||| renamed [CutWordsRight 1] (Mirror $ GridRatio $ fromRational $ recip aspectRatio)
-            ||| noBorders Full
+     layouts =  renamed [Replace "OneBig"    ] (Mirror $ OneBig (3/5) (1/2))
+            ||| renamed [Replace "DoubleGrid"] (Mirror $ SplitGrid Orientation.T 1 1 masterRatio (recip aspectRatio) resizeDelta)
+            ||| renamed [Replace "Circle"    ] (Circle)
+            ||| renamed [Replace "ThreeCol"  ] (ThreeColMid nmaster resizeDelta (3/7))
+            ||| renamed [Replace "Tall"      ] (Tall nmaster resizeDelta masterRatio)
+            ||| renamed [Replace "MirrorTall"] (Mirror $ Tall nmaster resizeDelta masterRatio)
+            ||| renamed [Replace "Spiral"    ] (spiral (6/9))
+            ||| renamed [Replace "GridRatio" ] (Mirror $ GridRatio $ fromRational $ recip aspectRatio)
+            ||| renamed [Replace "Full"      ] (noBorders Full)
      -- parameters
      nmaster     = 1     :: Int
      masterRatio = 3/5   :: Rational
      aspectRatio = 4/3   :: Rational
      resizeDelta = 3/100 :: Rational
+myLayoutNames =
+    [ "OneBig"
+    , "DoubleGrid"
+    , "Circle"
+    , "ThreeCol"
+    , "Tall"
+    , "MirrorTall"
+    , "Spiral"
+    , "GridRatio"
+    , "Full"
+    ]
 
 
 ------------------------------------------------------------------------
