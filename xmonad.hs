@@ -349,13 +349,12 @@ myLayoutHook = modifier layouts
      mySubTabbed x = addTabs shrinkText myTheme $ subLayout [] Simplest x
      -- layouts
      layouts =  renamed [Replace "OneBig"    ] (Mirror $ OneBig (3/5) (1/2))
-            ||| renamed [Replace "DoubleGrid"] (Mirror $ SplitGrid Orientation.T 1 1 masterRatio (recip aspectRatio) resizeDelta)
+            ||| renamed [Replace "Grid"      ] (Mirror $ SplitGrid Orientation.T 1 1 masterRatio (recip aspectRatio) resizeDelta)
             ||| renamed [Replace "Circle"    ] (Circle)
             ||| renamed [Replace "ThreeCol"  ] (ThreeColMid nmaster resizeDelta (3/7))
             ||| renamed [Replace "Tall"      ] (Tall nmaster resizeDelta masterRatio)
             ||| renamed [Replace "MirrorTall"] (Mirror $ Tall nmaster resizeDelta masterRatio)
             ||| renamed [Replace "Spiral"    ] (spiral (6/9))
-            ||| renamed [Replace "GridRatio" ] (Mirror $ GridRatio $ fromRational $ recip aspectRatio)
             ||| renamed [Replace "Full"      ] (noBorders Full)
      -- parameters
      nmaster     = 1     :: Int
@@ -364,13 +363,12 @@ myLayoutHook = modifier layouts
      resizeDelta = 3/100 :: Rational
 myLayoutNames =
     [ "OneBig"
-    , "DoubleGrid"
+    , "Grid"
     , "Circle"
     , "ThreeCol"
     , "Tall"
     , "MirrorTall"
     , "Spiral"
-    , "GridRatio"
     , "Full"
     ]
 
