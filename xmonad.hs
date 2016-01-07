@@ -349,7 +349,7 @@ myLayoutHook = modifier layouts
      mySubTabbed x = addTabs shrinkText myTheme $ subLayout [] Simplest x
      -- layouts
      layouts =  renamed [Replace "OneBig"    ] (Mirror $ OneBig (3/5) (1/2))
-            ||| renamed [Replace "Grid"      ] (Mirror $ SplitGrid Orientation.T 1 1 masterRatio (recip aspectRatio) resizeDelta)
+            ||| renamed [Replace "Grid"      ] (Mirror $ SplitGrid Orientation.T 1 0 masterRatio (recip aspectRatio) resizeDelta)
             ||| renamed [Replace "Circle"    ] (Circle)
             ||| renamed [Replace "ThreeCol"  ] (ThreeColMid nmaster resizeDelta (3/7))
             ||| renamed [Replace "Tall"      ] (Tall nmaster resizeDelta masterRatio)
