@@ -10,6 +10,7 @@ import qualified XMonad.Actions.FlexibleManipulate as Flex
 import           XMonad.Actions.FloatSnap          hiding (Direction2D (..))
 
 import           XMonad.Hooks.DynamicLog
+import           XMonad.Hooks.EwmhDesktops         (ewmh)
 import           XMonad.Hooks.ManageDocks          hiding (Direction2D (..))
 import           XMonad.Hooks.ManageHelpers
 
@@ -64,6 +65,7 @@ import           System.Exit
 import           System.FilePath
 import           System.IO
 import           System.Posix.User
+import           System.Taffybar.Hooks.PagerHints  (pagerHints)
 
 
 ------------------------------------------------------------------------
@@ -156,6 +158,7 @@ myKeys conf = mkKeymap conf $
     , ("M-]",   withFocused $ fadeIn 0.1)
     , ("M-=",   withFocused $ setOpacity (0xfffffffe / 0xffffffff))
     -- Layout
+    , ("M-b", sendMessage ToggleStruts)
     , ("M-<Space>", inputPromptWithCompl  myXPConfig "Layout" (mkComplFunFromListIgnoreCase' myLayoutNames) ?+ (sendMessage . JumpToLayout))
     , ("M-S-<Space>", setLayout $ XMonad.layoutHook conf)  --  Reset the layouts on the current workspace to default
     -- Moving the focus
@@ -379,7 +382,8 @@ myLayoutNames =
 
 -- The 'xprop' utility is helpful for obtaining window's properties.
 myManageHook = composeAll
-    [ fullscreenManageHook
+    [ manageDocks
+    , fullscreenManageHook
     , resource   =? "desktop_window"     --> doIgnore
     , resource   =? "kdesktop"           --> doIgnore
     , className  =? "Xfce4-notifyd"      --> doIgnore
@@ -418,39 +422,6 @@ myEventHook = hintsEventHook <+> fullscreenEventHook
 -- Status bars and logging
 
 myLogHook = return ()
-myBar = "LANG=ja_JP.UTF-8 xmobar"
-myPP = xmobarPP {
-        ppCurrent         = xmobarColor "#1f2329" "#e4c374" . wrap " " " ",
-        ppVisible         = wrap "(" ")",
-        ppHidden          = xmobarColor "#aeb8c5" "" . wrap " " " ",
-        ppHiddenNoWindows = xmobarColor "#626972" "" . wrap " " " ",
-        ppUrgent          = xmobarColor "#ffffff" "#b05353" . wrap " " " ",
-        ppSep             = "  ",
-        ppWsSep           = "",
-        ppTitle           = xmobarColor "#ecf4ff" "" . wrap " " " ",
-        ppLayout          = xmobarColor "#1f2329" "#887cb2" . wrap " " " "
-    }
-myModifyPP pp = do
-    wsWithCopies <- wsContainingCopies
-    wsWithWindows <- gets $ map W.tag . filter (isJust . W.stack) . W.workspaces . windowset
-    let check ws | ws `elem` wsWithCopies = xmobarColor "#88b8b0" "" ws
-                 | ws `elem` wsWithWindows = ppHidden pp ws
-                 | otherwise = ppHiddenNoWindows pp ws
-    return pp { ppHidden = check }
-toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
-
-statusBar' cmd pp modifyPP k conf = do
-    h <- spawnPipe cmd
-    return $ conf
-        { logHook = do
-            logHook conf
-            pp' <- modifyPP pp
-            dynamicLogWithPP pp' { ppOutput = hPutStrLn h }
-        , manageHook = manageHook conf <+> manageDocks
-        , keys = liftM2 M.union keys' (keys conf)
-        }
-  where
-    keys' = (`M.singleton` sendMessage ToggleStruts) . k
 
 
 ------------------------------------------------------------------------
@@ -462,7 +433,7 @@ myStartupHook = return ()
 ------------------------------------------------------------------------
 -- Run xmonad
 
-main = xmonad =<< statusBar' myBar myPP myModifyPP toggleStrutsKey myConfig
+main = xmonad (ewmh $ pagerHints myConfig)
 
 myConfig = defaultConfig {
       -- simple stuff
