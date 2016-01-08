@@ -433,7 +433,9 @@ myStartupHook = return ()
 ------------------------------------------------------------------------
 -- Run xmonad
 
-main = xmonad (ewmh $ pagerHints myConfig)
+main = do
+    spawn "killall --regexp taffybar-; taffybar"
+    xmonad (ewmh $ pagerHints myConfig)
 
 myConfig = defaultConfig {
       -- simple stuff
