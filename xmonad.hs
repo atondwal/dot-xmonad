@@ -95,6 +95,7 @@ myXPKeymap           = myXPKeymap' `M.union` defaultXPKeymap
             ]
 myXPConfig = defaultXPConfig {
         font          = "xft:M+ 1c:size=9",
+        searchPredicate = \input candidate -> all (`isInfixOf` candidate) (words input),
         promptKeymap  = myXPKeymap,
         height        = 24,
         promptBorderWidth = 0,
