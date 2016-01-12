@@ -130,7 +130,7 @@ myKeys conf = mkKeymap conf $
     , ("<XF86AudioRaiseVolume>",  spawn "pactl set-sink-volume @DEFAULT_SINK@ +5%")
     , ("<XF86AudioMute>",         spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
     -- Prompts
-    , ("M-r",   shellPrompt' =<< withHistMatch myXPConfig <$> initMatches)
+    , ("M-r",   shellPrompt' =<< withHistMatch myXPConfig { searchPredicate = isPrefixOf } <$> initMatches)
     , ("M-g",   windowPromptGoto      myXPConfig)
     , ("M-S-b", windowPromptBring     myXPConfig)
     , ("M-C-b", windowPromptBringCopy myXPConfig)
