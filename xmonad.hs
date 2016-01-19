@@ -134,6 +134,7 @@ myKeys conf = mkKeymap conf $
     , ("M-g",   windowPromptGoto      myXPConfig)
     , ("M-S-b", windowPromptBring     myXPConfig)
     , ("M-C-b", windowPromptBringCopy myXPConfig)
+    , ("M-c",   commandPrompt myXPConfig { font = "xft:Monospace:size=9" })
     -- Workspaces
     , ("M-a",   addWorkspacePrompt myXPConfig)
     , ("M-v",   selectWorkspace myXPConfig)
@@ -252,6 +253,27 @@ getCommands' = do
   where
     econst :: Monad m => a -> IOException -> m a
     econst = const . return
+
+withForkWait :: IO () -> (IO () ->  IO a) -> IO a
+withForkWait async body = do
+  waitVar <- newEmptyMVar :: IO (MVar (Either SomeException ()))
+  mask $ \restore -> do
+    tid <- forkIO $ try (restore async) >>= putMVar waitVar
+    let wait = takeMVar waitVar >>= either throwIO return
+    restore (body wait) `E.onException` killThread tid
+
+commandPrompt config =
+    inputPrompt config "Command" ?+ (io . runNotify)
+  where
+    runNotify commandline = do
+        (inh, outh) <- createPipe
+        (_, _, _, ph) <- createProcess (shell commandline) { std_out = UseHandle outh, std_err = UseHandle outh }
+        output <- hGetContents inh
+        void $ forkIO $
+            withForkWait (E.evaluate $ rnf output) $ \waitOutput -> do
+                waitOutput
+                hClose inh
+                safeSpawn "notify-send" ["--icon=xterm", "--expire-time=60000", commandline, output]
 
 rationalToOpacity :: Integral a => Rational -> a
 rationalToOpacity r = round $ r * 0xffffffff
