@@ -50,6 +50,8 @@ import           XMonad.Util.WorkspaceCompare
 
 import           Control.Applicative
 import           Control.Arrow                     (first)
+import           Control.Concurrent
+import           Control.DeepSeq
 import           Control.Exception                 as E
 import           Control.Monad
 import           Data.Char                         (toLower)
@@ -65,6 +67,7 @@ import           System.Exit
 import           System.FilePath
 import           System.IO
 import           System.Posix.User
+import           System.Process
 import           System.Taffybar.Hooks.PagerHints  (pagerHints)
 
 
