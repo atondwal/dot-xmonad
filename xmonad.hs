@@ -16,6 +16,7 @@ import           XMonad.Hooks.ManageHelpers
 
 import           XMonad.Layout.BoringWindows       (boringWindows, focusDown,
                                                     focusMaster, focusUp)
+import           XMonad.Layout.CenteredMaster
 import           XMonad.Layout.Circle
 import           XMonad.Layout.Fullscreen
 import           XMonad.Layout.Grid
@@ -378,6 +379,7 @@ myLayoutHook = modifier layouts
      mySubTabbed x = addTabs shrinkText myTheme $ subLayout [] Simplest x
      -- layouts
      layouts =  renamed [Replace "OneBig"    ] (Mirror $ OneBig (3/5) (1/2))
+            ||| renamed [Replace "Center"    ] (centerMaster $ Mirror $ SplitGrid Orientation.T 1 0 masterRatio (recip aspectRatio) resizeDelta)
             ||| renamed [Replace "Grid"      ] (Mirror $ SplitGrid Orientation.T 1 0 masterRatio (recip aspectRatio) resizeDelta)
             ||| renamed [Replace "Circle"    ] (Circle)
             ||| renamed [Replace "ThreeCol"  ] (ThreeColMid nmaster resizeDelta (3/7))
@@ -392,6 +394,7 @@ myLayoutHook = modifier layouts
      resizeDelta = 3/100 :: Rational
 myLayoutNames =
     [ "OneBig"
+    , "Center"
     , "Grid"
     , "Circle"
     , "ThreeCol"
