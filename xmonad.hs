@@ -78,7 +78,7 @@ import           System.Taffybar.Hooks.PagerHints  (pagerHints)
 myTerminal           = "~/dotfiles/launch-pangoterm -- zsh --login"
 myEditor             = "NVIM_TUI_ENABLE_TRUE_COLOR=1 NVIM_TUI_ENABLE_CURSOR_SHAPE=1 sakura -e nvim"
 myBrowser            = "firefox"
-myScreenLock         = "xscreensaver-command -lock"
+myScreenLock         = "slock"
 myScreenOff          = "xset dpms force off"
 myFocusFollowsMouse  = False
 myClickJustFocuses   = False
