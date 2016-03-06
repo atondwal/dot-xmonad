@@ -60,7 +60,10 @@ import           Data.List
 import qualified Data.Map                          as M
 import           Data.Maybe
 import           Data.Word                         (Word32)
+import           Foreign.C.Error                   (Errno (..), ePIPE)
 import           Foreign.C.Types                   (CLong)
+import           GHC.IO.Exception                  (IOErrorType (..),
+                                                    IOException (..))
 import           Graphics.X11.ExtraTypes.XF86
 import           System.Directory
 import           System.Environment
@@ -266,18 +269,39 @@ withForkWait async body = do
     let wait = takeMVar waitVar >>= either throwIO return
     restore (body wait) `E.onException` killThread tid
 
+ignoreSigPipe :: IO () -> IO ()
+ignoreSigPipe = E.handle $ \e -> case e of
+                                   IOError { ioe_type  = ResourceVanished
+                                           , ioe_errno = Just ioe }
+                                     | Errno ioe == ePIPE -> return ()
+                                   _ -> throwIO e
+
+waitForProcess' :: ProcessHandle -> IO ExitCode
+waitForProcess' ph = do
+    mec <- getProcessExitCode ph
+    case mec of
+        Nothing -> yield >> waitForProcess' ph
+        Just ec -> return ec
+
 commandPrompt config =
     inputPrompt config "Command" ?+ (io . runNotify)
   where
     runNotify commandline = do
-        (inh, outh) <- createPipe
-        (_, _, _, ph) <- createProcess (shell commandline) { std_out = UseHandle outh, std_err = UseHandle outh }
-        output <- hGetContents inh
-        void $ forkIO $
-            withForkWait (E.evaluate $ rnf output) $ \waitOutput -> do
-                waitOutput
-                hClose inh
-                safeSpawn "notify-send" ["--icon=xterm", "--expire-time=60000", commandline, output]
+        (Just hin, Just hout, _, ph) <- do
+            (rend, wend) <- createPipe
+            (Just hin, _, _, ph) <- createProcess (shell commandline)
+                { std_in  = CreatePipe
+                , std_out = UseHandle wend
+                , std_err = UseHandle wend
+                }
+            return (Just hin, Just rend, Just rend, ph)
+        output <- hGetContents hout
+        withForkWait (E.evaluate $ rnf output) $ \waitOutput -> do
+            ignoreSigPipe $ hClose hin
+            waitOutput
+            hClose hout
+        _ <- waitForProcess' ph
+        safeSpawn "notify-send" ["--icon=xterm", "--expire-time=60000", commandline, output]
 
 rationalToOpacity :: Integral a => Rational -> a
 rationalToOpacity r = round $ r * 0xffffffff
