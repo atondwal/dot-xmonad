@@ -78,8 +78,8 @@ import           System.Taffybar.Hooks.PagerHints  (pagerHints)
 ------------------------------------------------------------------------
 -- Variables
 
-myTerminal           = "~/dotfiles/launch-pangoterm -- zsh --login"
-myEditor             = "NVIM_TUI_ENABLE_TRUE_COLOR=1 NVIM_TUI_ENABLE_CURSOR_SHAPE=1 sakura -e nvim"
+myTerminal           = "~/dotfiles/launch-st -- zsh --login"
+myEditor             = "NVIM_TUI_ENABLE_TRUE_COLOR=1 NVIM_TUI_ENABLE_CURSOR_SHAPE=1 ~/dotfiles/launch-st -e nvim"
 myBrowser            = "firefox"
 myScreenLock         = "slock"
 myScreenOff          = "xset dpms force off"
