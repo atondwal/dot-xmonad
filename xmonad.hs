@@ -452,6 +452,7 @@ myManageHook = composeAll
     , className  =? "Xmessage"           --> doFloat
     , className  =? "Qemu-system-x86_64" --> doFloat
     , className  =? "Remote-viewer"      --> doFloat
+    , appName    =? "crx_knipolnnllmklapflnccelgolnpehhpl" --> doFloat
     , windowRole =? "pop-up"             --> doFloat
     , minecraftWindow                    --> doFloat
     , firefoxDialogs                     --> doFloat
