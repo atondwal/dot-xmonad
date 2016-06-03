@@ -109,8 +109,10 @@ myXPConfig = defaultXPConfig {
         height        = 24,
         promptBorderWidth = 0,
         historyFilter = deleteAllDuplicates,
-        autoComplete  = Just 500000
+        autoComplete  = Just (millisecond 500)
     }
+  where
+    millisecond = (* 1000)
 myTheme = defaultTheme {
         fontName = "xft:M+ 1c:size=9"
     }
