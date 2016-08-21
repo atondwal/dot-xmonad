@@ -217,6 +217,14 @@ myKeys conf = mkKeymap conf $
     [("M-S-" ++ show n, a) | (n, a) <- zip [1..9] (map (withNthWorkspace W.shift) [0..])]
     ++
     [("M-C-" ++ show n, a) | (n, a) <- zip [1..9] (map (withNthWorkspace copy) [0..])]
+    ++
+
+    -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
+    -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
+    [ ("M-" ++ mod ++ key, screenWorkspace screen >>= flip whenJust (windows . func))
+      | (key, screen) <- zip ["<F" ++ show n ++ ">" | n <- [1..3]] [0..]
+      , (func, mod) <- [(W.view, ""), (W.shift, "S-")]]
+
   where
     withHistMatch xpc hm = xpc
         { promptKeymap = M.union (M.fromList [ ((0, xK_Up),   historyUpMatching hm)
