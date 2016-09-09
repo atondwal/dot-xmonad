@@ -502,6 +502,7 @@ myStartupHook = return ()
 
 main = do
     spawn "killall --regexp taffybar-; taffybar"
+    spawn "killall compton; sleep 0.1; compton"
     xmonad (ewmh $ pagerHints myConfig)
 
 myConfig = defaultConfig {
