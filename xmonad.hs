@@ -8,6 +8,7 @@ import           XMonad.Actions.CycleWS
 import           XMonad.Actions.DynamicWorkspaces
 import qualified XMonad.Actions.FlexibleManipulate as Flex
 import           XMonad.Actions.FloatSnap          hiding (Direction2D (..))
+import           XMonad.Actions.PhysicalScreens    (onPrevNeighbour, onNextNeighbour)
 
 import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.EwmhDesktops         (ewmh)
@@ -157,6 +158,8 @@ myKeys conf = mkKeymap conf $
     , ("M-S-<Page_Up>",   findWorkspace getSortByTag Prev AnyWS 1 >>= windows . W.greedyView)
     , ("M-C-l", loadWorkspaces)
     , ("M-C-s", saveWorkspaces)
+    , ("M-s", onNextNeighbour W.view)
+    , ("M-S-s", onPrevNeighbour W.view)
     -- Window manipulations
     , ("M-C-c", kill1)
     , ("M-C-S-c", killAllOtherCopies >> kill1)
