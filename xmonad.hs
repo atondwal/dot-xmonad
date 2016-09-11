@@ -355,6 +355,7 @@ loadWorkspaces =
         ws <- io $ lines <$> readFile sessionFile
         forM_ ws addWorkspace
         spawn $ unwords [ "notify-send"
+                        , "--icon=workspace-switcher"
                         , "xmonad"
                         , "'Loaded " ++ show (length ws) ++ " workspaces.'"]
 
@@ -365,6 +366,7 @@ saveWorkspaces =
             copyFile sessionFile (sessionFile ++ ".bak")
             writeFile sessionFile $ unlines $ map W.tag $ W.workspaces ws
         spawn $ unwords [ "notify-send"
+                        , "--icon=workspace-switcher"
                         , "xmonad"
                         , "'Current workspaces have been saved.'"
                         ]
