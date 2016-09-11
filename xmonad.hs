@@ -314,7 +314,7 @@ commandPrompt config =
             waitOutput
             hClose hout
         _ <- waitForProcess' ph
-        safeSpawn "notify-send" ["--icon=xterm", "--expire-time=60000", commandline, output]
+        safeSpawn "notify-send" ["--icon=terminal", "--expire-time=60000", commandline, output]
 
 rationalToOpacity :: Integral a => Rational -> a
 rationalToOpacity r = round $ r * 0xffffffff
