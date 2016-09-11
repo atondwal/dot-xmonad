@@ -209,7 +209,13 @@ myKeys conf = mkKeymap conf $
     , ("M-S-<Down>",  withFocused $ snapGrow   Dir2D.D Nothing)
     -- Controling xmonad
     , ("M-C-q", io exitSuccess)
-    , ("M-C-r", spawn "xmonad --recompile; xmonad --restart")
+    , ("M-C-r", do
+        spawn $ unwords [ "notify-send"
+                        , "--icon=system-reboot"
+                        , "--expire-time=3000"
+                        , "xmonad"
+                        , "Restarting..."]
+        spawn "xmonad --recompile; xmonad --restart")
     ]
     ++
 
