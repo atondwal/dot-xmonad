@@ -71,6 +71,7 @@ import           System.Environment
 import           System.Exit
 import           System.FilePath
 import           System.IO
+import           System.IO.Unsafe                  (unsafePerformIO)
 import           System.Posix.User
 import           System.Process
 import           System.Taffybar.Hooks.PagerHints  (pagerHints)
@@ -78,6 +79,15 @@ import           System.Taffybar.Hooks.PagerHints  (pagerHints)
 
 ------------------------------------------------------------------------
 -- Variables
+
+dpi :: Double
+dpi = unsafePerformIO $ read <$> do
+    mdpiStr <- lookup "DPI" <$> getEnvironment
+    case mdpiStr of
+        Just dpiStr -> return dpiStr
+        Nothing -> do
+            let commandLine = "xdpyinfo | sed -n '/resolution/ { s/^[^0-9]*\\([0-9]\\+\\)x.*$/\\1/; p; }'"
+            readCreateProcess (shell commandLine) ""
 
 myTerminal           = "~/dotfiles/launch-st -- zsh --login"
 myEditor             = "~/dotfiles/launch-st -e nvim"
@@ -107,7 +117,7 @@ myXPConfig = defaultXPConfig {
         font          = "xft:M+ 1c:size=9",
         searchPredicate = \input candidate -> all (`isInfixOf` candidate) (words input),
         promptKeymap  = myXPKeymap,
-        height        = 24,
+        height        = floor $ 22 * dpi / 96,
         promptBorderWidth = 0,
         historyFilter = deleteAllDuplicates,
         autoComplete  = Just (millisecond 500)
