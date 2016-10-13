@@ -125,7 +125,8 @@ myXPConfig = defaultXPConfig {
   where
     millisecond = (* 1000)
 myTheme = defaultTheme {
-        fontName = "xft:M+ 1c:size=9"
+        fontName = "xft:M+ 1c:size=9",
+        decoHeight = floor $ 22 * dpi / 96
     }
 
 sessionFile = "/home/yuta/.workspaces"
