@@ -143,8 +143,12 @@ myKeys conf = mkKeymap conf $
     , ("M-w",   spawn myBrowser)
     , ("M-C-x", spawn myScreenLock)
     , ("M-C-o", spawn myScreenOff)
-    , ("M-<Print>", spawn "scrot screen_%Y-%m-%d-%H-%M-%S.png")
-    , ("M-C-<Print>", spawn "scrot window_%Y-%m-%d-%H-%M-%S.png -u")
+    , ("M-<Print>", do
+          spawn "scrot screen_%Y-%m-%d-%H-%M-%S.png"
+          spawn "notify-send --icon=shutter --expire-time=1500 xmonad 'Screen captured.'")
+    , ("M-C-<Print>", do
+          spawn "scrot window_%Y-%m-%d-%H-%M-%S.png -u"
+          spawn "notify-send --icon=shutter --expire-time=1500 xmonad 'Window captured.'")
     , ("<XF86MonBrightnessUp>",   spawn "xbacklight + 10")
     , ("<XF86MonBrightnessDown>", spawn "xbacklight - 10")
     , ("<XF86AudioLowerVolume>",  spawn "pactl set-sink-volume @DEFAULT_SINK@ -5%")
