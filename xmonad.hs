@@ -165,6 +165,8 @@ myKeys conf = mkKeymap conf $
     , ("M-S-m",   withWorkspace myXPConfig { autoComplete = Nothing } (windows . W.shift))
     , ("M-<Page_Down>",   findWorkspace getSortByTag Next NonEmptyWS 1 >>= windows . W.greedyView)
     , ("M-<Page_Up>",     findWorkspace getSortByTag Prev NonEmptyWS 1 >>= windows . W.greedyView)
+    , ("M-C-<Page_Down>", findWorkspace getSortByTag Next (WSTagGroup '/') 1 >>= windows . W.greedyView)
+    , ("M-C-<Page_Up>",   findWorkspace getSortByTag Prev (WSTagGroup '/') 1 >>= windows . W.greedyView)
     , ("M-S-<Page_Down>", findWorkspace getSortByTag Next AnyWS 1 >>= windows . W.greedyView)
     , ("M-S-<Page_Up>",   findWorkspace getSortByTag Prev AnyWS 1 >>= windows . W.greedyView)
     , ("M-C-l", loadWorkspaces)
