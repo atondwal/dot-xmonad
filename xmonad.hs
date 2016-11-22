@@ -14,6 +14,7 @@ import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.EwmhDesktops         (ewmh)
 import           XMonad.Hooks.ManageDocks          hiding (Direction2D (..))
 import           XMonad.Hooks.ManageHelpers
+import           XMonad.Hooks.SetWMName
 
 import           XMonad.Layout.BoringWindows       (boringWindows, focusDown,
                                                     focusMaster, focusUp)
@@ -519,7 +520,7 @@ myLogHook = return ()
 ------------------------------------------------------------------------
 -- Startup hook
 
-myStartupHook = return ()
+myStartupHook = setWMName "LG3D"
 
 
 ------------------------------------------------------------------------
