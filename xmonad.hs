@@ -115,7 +115,7 @@ myXPKeymap           = myXPKeymap' `M.union` defaultXPKeymap
             , (xK_n, moveHistory W.focusUp')
             ]
 myXPConfig = defaultXPConfig {
-        font          = "xft:M+ 1c:size=9",
+        font          = "xft:Monospace:size=9",
         bgColor       = "#f8f8f8",
         fgColor       = "#383838",
         searchPredicate = \input candidate -> all (`isInfixOf` candidate) (words input),
