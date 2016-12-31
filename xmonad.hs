@@ -92,6 +92,7 @@ dpi = unsafePerformIO $ read <$> do
 
 myTerminal           = "~/dotfiles/launch-st -- zsh --login"
 myEditor             = "~/dotfiles/launch-st -e nvim"
+mySecondEditor       = "emacsclient --alternate-editor='' --create-frame --no-wait"
 myBrowser            = "firefox"
 myScreenOff          = "sleep 0.5; xset dpms force off"
 myScreenLock         = "slock" ++ " " ++ myScreenOff
@@ -142,7 +143,8 @@ myKeys conf = mkKeymap conf $
     -- Programs
     [ ("M-;",   spawn $ XMonad.terminal conf)
     , ("M-e",   spawn myEditor)
-    , ("M-S-e", startEmacsDaemonPrompt myXPConfig { autoComplete = Nothing })
+    , ("M-S-e", spawn mySecondEditor)
+    , ("M-C-S-e", startEmacsDaemonPrompt myXPConfig { autoComplete = Nothing })
     , ("M-w",   spawn myBrowser)
     , ("M-C-x", spawn myScreenLock)
     , ("M-C-o", spawn myScreenOff)
