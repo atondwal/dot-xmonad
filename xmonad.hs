@@ -272,7 +272,7 @@ myKeys conf = mkKeymap conf $
         msession <- inputPromptWithCompl xpc "Emacs session" complFun
         case msession of
             Nothing -> return ()
-            Just "" -> spawn $ "emacsclient --alternate-editor='' --create-frame --no-wait"
+            Just "" -> spawn "emacsclient --alternate-editor='' --create-frame --no-wait"
             Just session -> spawn $ "emacsclient --alternate-editor='' --create-frame --no-wait --socket-name='" ++ session ++ "'"
 
 mkComplFunFromListIgnoreCase' :: [String] -> String -> IO [String]
