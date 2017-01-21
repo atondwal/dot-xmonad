@@ -497,6 +497,7 @@ myManageHook = composeAll
     , className  =? "Qemu-system-x86_64" --> doFloat
     , className  =? "Remote-viewer"      --> doFloat
     , className  =? "xfreerdp"           --> doFloat
+    , className  =? "Stardict"           --> doFloat
     , appName    =? "crx_knipolnnllmklapflnccelgolnpehhpl" --> doFloat
     , windowRole =? "pop-up"             --> doFloat
     , minecraftWindow                    --> doFloat
