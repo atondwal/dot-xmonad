@@ -477,8 +477,7 @@ myLayoutNames =
 
 -- The 'xprop' utility is helpful for obtaining window's properties.
 myManageHook = composeAll
-    [ manageDocks
-    , fullscreenManageHook
+    [ fullscreenManageHook
     , resource   =? "desktop_window"     --> doIgnore
     , resource   =? "kdesktop"           --> doIgnore
     , className  =? "Xfce4-notifyd"      --> doIgnore
@@ -534,7 +533,7 @@ myStartupHook = setWMName "LG3D"
 main = do
     spawn "$HOME/.config/polybar/launch.sh"
     spawn "killall compton; sleep 0.1; compton"
-    xmonad (ewmh myConfig)
+    xmonad (ewmh $ docks myConfig)
 
 myConfig = defaultConfig {
       -- simple stuff
