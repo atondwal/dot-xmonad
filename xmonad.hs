@@ -75,7 +75,6 @@ import           System.IO
 import           System.IO.Unsafe                  (unsafePerformIO)
 import           System.Posix.User
 import           System.Process
-import           System.Taffybar.Hooks.PagerHints  (pagerHints)
 
 
 ------------------------------------------------------------------------
@@ -533,9 +532,8 @@ myStartupHook = setWMName "LG3D"
 -- Run xmonad
 
 main = do
-    spawn "killall --regexp taffybar-; taffybar"
     spawn "killall compton; sleep 0.1; compton"
-    xmonad (ewmh $ pagerHints myConfig)
+    xmonad (ewmh myConfig)
 
 myConfig = defaultConfig {
       -- simple stuff
