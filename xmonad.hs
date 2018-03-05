@@ -532,7 +532,7 @@ myStartupHook = setWMName "LG3D"
 
 main = do
     spawn "$HOME/.config/polybar/launch.sh"
-    spawn "killall compton; sleep 0.1; compton"
+    spawn "$HOME/dotfiles/launch-compton.sh"
     xmonad (ewmh $ docks myConfig)
 
 myConfig = defaultConfig {
