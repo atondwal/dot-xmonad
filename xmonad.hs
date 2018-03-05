@@ -236,11 +236,11 @@ myKeys conf = mkKeymap conf $
 
     -- mod-[1..9], Switch to workspace N
     -- mod-shift-[1..9], Move client to workspace N
-    [("M-" ++ show n, a) | (n, a) <- zip [1..9] (map (withNthWorkspace W.greedyView) [0..])]
+    [("M-" ++ show n, a) | (n, a) <- zip [1..9::Int] (map (withNthWorkspace W.greedyView) [0..])]
     ++
-    [("M-S-" ++ show n, a) | (n, a) <- zip [1..9] (map (withNthWorkspace W.shift) [0..])]
+    [("M-S-" ++ show n, a) | (n, a) <- zip [1..9::Int] (map (withNthWorkspace W.shift) [0..])]
     ++
-    [("M-C-" ++ show n, a) | (n, a) <- zip [1..9] (map (withNthWorkspace copy) [0..])]
+    [("M-C-" ++ show n, a) | (n, a) <- zip [1..9::Int] (map (withNthWorkspace copy) [0..])]
     ++
 
     -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
