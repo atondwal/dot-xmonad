@@ -20,8 +20,8 @@ import           XMonad.Layout.BoringWindows       (boringWindows, focusDown,
                                                     focusMaster, focusUp)
 import           XMonad.Layout.CenteredMaster
 import           XMonad.Layout.Circle
+import           XMonad.Layout.Column
 import           XMonad.Layout.Fullscreen
-import           XMonad.Layout.Grid
 import           XMonad.Layout.GridVariants        hiding (Orientation (..))
 import qualified XMonad.Layout.GridVariants        as Orientation (Orientation (..))
 import           XMonad.Layout.LayoutCombinators
@@ -177,7 +177,7 @@ myKeys conf = mkKeymap conf $
     , ("M-C-<Page_Up>",   findWorkspace getSortByTag Prev (WSTagGroup '/') 1 >>= windows . W.greedyView)
     , ("M-S-<Page_Down>", findWorkspace getSortByTag Next AnyWS 1 >>= windows . W.greedyView)
     , ("M-S-<Page_Up>",   findWorkspace getSortByTag Prev AnyWS 1 >>= windows . W.greedyView)
-    , ("M-C-l", loadWorkspaces)
+    -- , ("M-C-l", loadWorkspaces)
     , ("M-C-s", saveWorkspaces)
     , ("M-s", onNextNeighbour W.view)
     , ("M-S-s", onNextNeighbour W.shift)
@@ -186,8 +186,6 @@ myKeys conf = mkKeymap conf $
     , ("M-C-S-c", killAllOtherCopies >> kill1)
     , ("M-t",   withFocused $ windows . W.sink)  -- Push window back into tiling
     , ("M-f",   withFocused (sendMessage . maximizeRestore))
-    , ("M-j",   withFocused minimizeWindow)
-    , ("M-k",   sendMessage RestoreNextMinimizedWin)
     , ("M-[",   withFocused $ fadeOut 0.1)
     , ("M-]",   withFocused $ fadeIn 0.1)
     , ("M-=",   withFocused $ setOpacity (0xfffffffe / 0xffffffff))
@@ -196,16 +194,27 @@ myKeys conf = mkKeymap conf $
     , ("M-<Space>", inputPromptWithCompl  myXPConfig "Layout" (mkComplFunFromListIgnoreCase' myLayoutNames) ?+ (sendMessage . JumpToLayout))
     , ("M-S-<Space>", setLayout $ XMonad.layoutHook conf)  --  Reset the layouts on the current workspace to default
     -- Moving the focus
-    , ("M-<Return>", focusMaster)
-    , ("M-n",        focusDown)
-    , ("M-p",        focusUp)
-    , ("M-<Tab>",    windows W.focusDown)
-    , ("M-S-<Tab>",  windows W.focusUp)
+    , ("M-<Return>", windows W.focusMaster)
+    , ("M-n",        windows W.focusDown)
+    , ("M-p",        windows W.focusUp)
+    , ("M-h", sendMessage $ Go Dir2D.L)
+    , ("M-j", sendMessage $ Go Dir2D.D)
+    , ("M-k", sendMessage $ Go Dir2D.U)
+    , ("M-l", sendMessage $ Go Dir2D.R)
     -- Swapping windows
     , ("M-S-<Return>", windows W.shiftMaster)
     , ("M-S-n",        windows W.swapDown)
     , ("M-S-p",        windows W.swapUp)
+    , ("M-S-h", sendMessage $ Swap Dir2D.L)
+    , ("M-S-j", sendMessage $ Swap Dir2D.D)
+    , ("M-S-k", sendMessage $ Swap Dir2D.U)
+    , ("M-S-l", sendMessage $ Swap Dir2D.R)
     -- Sublayout
+    , ("M-/",   toSubl NextLayout)
+    , ("M-C-h", sendMessage $ pullGroup L)
+    , ("M-C-j", sendMessage $ pullGroup D)
+    , ("M-C-k", sendMessage $ pullGroup U)
+    , ("M-C-l", sendMessage $ pullGroup R)
     , ("M-C-n", withFocused (sendMessage . mergeDir' W.focusDown'))
     , ("M-C-p", withFocused (sendMessage . mergeDir' W.focusUp'))
     , ("M-C-m", withFocused (sendMessage . MergeAll))
@@ -426,32 +435,23 @@ myMouseBindings XConfig {XMonad.modMask = modm} = M.fromList
 ------------------------------------------------------------------------
 -- Layouts
 
-myLayoutHook = modifier layouts
+myLayoutHook = avoidStruts
+             . layoutHints
+             . maximize
+             . configurableNavigation noNavigateBorders
+             . subLayout [] subLayouts
+             . spacingWithEdge 12
+             $ layouts
   where
-     -- layout modifiers
-     modifier = renamed [CutWordsLeft 6]
-              . layoutHints
-              . fullscreenFloat
-              . fullscreenFocus
-              . avoidStruts
-              . mySubTabbed
-              . spacingWithEdge 12
-              . smartBorders
-              . configurableNavigation noNavigateBorders
-              . maximize
-              . minimize
-              . boringWindows
-     mySubTabbed x = addTabs shrinkText myTheme $ subLayout [] Simplest x
      -- layouts
+     subLayouts = Mirror (Column 1.0) ||| Column 1.0 ||| tabbed shrinkText myTheme
      layouts =  renamed [Replace "OneBig"    ] (Mirror $ OneBig (3/5) (1/2))
-            ||| renamed [Replace "Center"    ] (centerMaster $ Mirror $ SplitGrid Orientation.T 1 0 masterRatio (recip aspectRatio) resizeDelta)
             ||| renamed [Replace "Grid"      ] (Mirror $ SplitGrid Orientation.T 1 0 masterRatio (recip aspectRatio) resizeDelta)
-            ||| renamed [Replace "Circle"    ] (Circle)
             ||| renamed [Replace "ThreeCol"  ] (ThreeColMid nmaster resizeDelta (3/7))
             ||| renamed [Replace "Tall"      ] (Tall nmaster resizeDelta masterRatio)
             ||| renamed [Replace "MirrorTall"] (Mirror $ Tall nmaster resizeDelta masterRatio)
             ||| renamed [Replace "Spiral"    ] (spiral (6/9))
-            ||| renamed [Replace "Full"      ] (noBorders Full)
+            ||| renamed [Replace "Full"      ] (Full)
      -- parameters
      nmaster     = 1     :: Int
      masterRatio = 3/5   :: Rational
@@ -459,9 +459,7 @@ myLayoutHook = modifier layouts
      resizeDelta = 3/100 :: Rational
 myLayoutNames =
     [ "OneBig"
-    , "Center"
     , "Grid"
-    , "Circle"
     , "ThreeCol"
     , "Tall"
     , "MirrorTall"
