@@ -89,8 +89,8 @@ dpi = unsafePerformIO $ read <$> do
             let commandLine = "xdpyinfo | sed -n '/resolution/ { s/^[^0-9]*\\([0-9]\\+\\)x.*$/\\1/; p; }'"
             readCreateProcess (shell commandLine) ""
 
-myTerminal           = "~/dotfiles/launch-st -- zsh --login"
-myEditor             = "~/dotfiles/launch-st -e nvim"
+myTerminal           = "~/.local/bin/st"
+myEditor             = "~/.local/bin/st -e nvim"
 mySecondEditor       = "emacsclient --alternate-editor='' --create-frame --no-wait"
 myBrowser            = "firefox"
 myScreenOff          = "sleep 0.5; xset dpms force off"
