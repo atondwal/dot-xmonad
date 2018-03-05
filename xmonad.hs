@@ -10,16 +10,11 @@ import qualified XMonad.Actions.FlexibleManipulate as Flex
 import           XMonad.Actions.FloatSnap          hiding (Direction2D (..))
 import           XMonad.Actions.PhysicalScreens    (onNextNeighbour)
 
-import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.EwmhDesktops         (ewmh)
 import           XMonad.Hooks.ManageDocks          hiding (Direction2D (..))
 import           XMonad.Hooks.ManageHelpers
 import           XMonad.Hooks.SetWMName
 
-import           XMonad.Layout.BoringWindows       (boringWindows, focusDown,
-                                                    focusMaster, focusUp)
-import           XMonad.Layout.CenteredMaster
-import           XMonad.Layout.Circle
 import           XMonad.Layout.Column
 import           XMonad.Layout.Fullscreen
 import           XMonad.Layout.GridVariants        hiding (Orientation (..))
@@ -27,14 +22,10 @@ import qualified XMonad.Layout.GridVariants        as Orientation (Orientation (
 import           XMonad.Layout.LayoutCombinators
 import           XMonad.Layout.LayoutHints
 import           XMonad.Layout.Maximize
-import           XMonad.Layout.Minimize
-import           XMonad.Layout.NoBorders
 import           XMonad.Layout.OneBig
 import           XMonad.Layout.Renamed
-import           XMonad.Layout.Simplest
 import           XMonad.Layout.Spacing
 import           XMonad.Layout.Spiral
-import           XMonad.Layout.StackTile
 import           XMonad.Layout.SubLayouts
 import           XMonad.Layout.Tabbed
 import           XMonad.Layout.ThreeColumns
@@ -47,11 +38,9 @@ import           XMonad.Prompt.Window
 
 import           XMonad.Util.EZConfig
 import           XMonad.Util.Run
-import qualified XMonad.Util.Types                 (Direction2D)
 import qualified XMonad.Util.Types                 as Dir2D (Direction2D (..))
 import           XMonad.Util.WorkspaceCompare
 
-import           Control.Applicative
 import           Control.Arrow                     (first)
 import           Control.Concurrent
 import           Control.DeepSeq
@@ -60,13 +49,11 @@ import           Control.Monad
 import           Data.Char                         (toLower)
 import           Data.List
 import qualified Data.Map                          as M
-import           Data.Maybe
 import           Data.Word                         (Word32)
 import           Foreign.C.Error                   (Errno (..), ePIPE)
 import           Foreign.C.Types                   (CLong)
 import           GHC.IO.Exception                  (IOErrorType (..),
                                                     IOException (..))
-import           Graphics.X11.ExtraTypes.XF86
 import           System.Directory
 import           System.Environment
 import           System.Exit
