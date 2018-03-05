@@ -222,8 +222,8 @@ myKeys conf = mkKeymap conf $
     , ("M-.",   onGroup W.focusDown')
     , ("M-,",   onGroup W.focusUp')
     -- Master area
-    , ("M-h",   sendMessage Shrink)
-    , ("M-l",   sendMessage Expand)
+    , ("M-C-n",   sendMessage Shrink)
+    , ("M-C-w",   sendMessage Expand)
     , ("M-S-=",   sendMessage (IncMasterN 1))
     , ("M--",     sendMessage (IncMasterN (-1)))
     -- Floating windows
