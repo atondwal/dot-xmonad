@@ -220,14 +220,14 @@ myKeys conf = mkKeymap conf $
     , ("M-S-v", sendMessage (IncMasterCols 1))
     , ("M-S-u", sendMessage (IncMasterCols (-1)))
     -- Floating windows
-    , ("M-<Left>",    withFocused $ snapMove   Dir2D.L Nothing)
-    , ("M-<Right>",   withFocused $ snapMove   Dir2D.R Nothing)
-    , ("M-<Up>",      withFocused $ snapMove   Dir2D.U Nothing)
-    , ("M-<Down>",    withFocused $ snapMove   Dir2D.D Nothing)
-    , ("M-S-<Left>",  withFocused $ snapShrink Dir2D.R Nothing)
-    , ("M-S-<Right>", withFocused $ snapGrow   Dir2D.R Nothing)
-    , ("M-S-<Up>",    withFocused $ snapShrink Dir2D.D Nothing)
-    , ("M-S-<Down>",  withFocused $ snapGrow   Dir2D.D Nothing)
+    , ("M-S-<Left>",  withFocused $ snapMove   Dir2D.L Nothing)
+    , ("M-S-<Right>", withFocused $ snapMove   Dir2D.R Nothing)
+    , ("M-S-<Up>",    withFocused $ snapMove   Dir2D.U Nothing)
+    , ("M-S-<Down>",  withFocused $ snapMove   Dir2D.D Nothing)
+    , ("M-C-<Left>",  withFocused $ snapShrink Dir2D.R Nothing)
+    , ("M-C-<Right>", withFocused $ snapGrow   Dir2D.R Nothing)
+    , ("M-C-<Up>",    withFocused $ snapShrink Dir2D.D Nothing)
+    , ("M-C-<Down>",  withFocused $ snapGrow   Dir2D.D Nothing)
     -- Controling xmonad
     , ("M-C-q", io exitSuccess)
     , ("M-C-r", do
