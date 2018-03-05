@@ -245,9 +245,9 @@ myKeys conf = mkKeymap conf $
 
     -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
     -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
-    [ ("M-" ++ mod ++ key, screenWorkspace screen >>= flip whenJust (windows . func))
-      | (key, screen) <- zip ["<F" ++ show n ++ ">" | n <- [1..3]] [0..]
-      , (func, mod) <- [(W.view, ""), (W.shift, "S-")]]
+    [ ("M-" ++ modKey ++ key, screenWorkspace screen >>= flip whenJust (windows . func))
+      | (key, screen) <- zip ["<F" ++ show n ++ ">" | n <- [1..3::Int]] [0..]
+      , (func, modKey) <- [(W.view, ""), (W.shift, "S-")]]
 
   where
     withHistMatch xpc hm = xpc
@@ -318,8 +318,8 @@ waitForProcess' ph = do
         Nothing -> yield >> waitForProcess' ph
         Just ec -> return ec
 
-commandPrompt config =
-    inputPrompt config "Command" ?+ (io . runNotify)
+commandPrompt cfg =
+    inputPrompt cfg "Command" ?+ (io . runNotify)
   where
     runNotify commandline = do
         (Just hin, Just hout, _, ph) <- do
