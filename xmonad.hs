@@ -524,16 +524,16 @@ myLogHook = return ()
 ------------------------------------------------------------------------
 -- Startup hook
 
-myStartupHook = setWMName "LG3D"
+myStartupHook = do
+    setWMName "LG3D"
+    spawn "$HOME/.config/polybar/launch.sh"
+    spawn "$HOME/dotfiles/launch-compton.sh"
 
 
 ------------------------------------------------------------------------
 -- Run xmonad
 
-main = do
-    spawn "$HOME/.config/polybar/launch.sh"
-    spawn "$HOME/dotfiles/launch-compton.sh"
-    xmonad (ewmh $ docks myConfig)
+main = xmonad (ewmh $ docks myConfig)
 
 myConfig = defaultConfig {
       -- simple stuff
