@@ -532,6 +532,7 @@ myStartupHook = setWMName "LG3D"
 -- Run xmonad
 
 main = do
+    spawn "$HOME/.config/polybar/launch.sh"
     spawn "killall compton; sleep 0.1; compton"
     xmonad (ewmh myConfig)
 
