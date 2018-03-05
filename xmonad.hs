@@ -215,10 +215,8 @@ myKeys conf = mkKeymap conf $
     -- Master area
     , ("M-h",   sendMessage Shrink)
     , ("M-l",   sendMessage Expand)
-    , ("M-S-h", sendMessage (IncMasterRows 1)    >> sendMessage (IncMasterN 1))
-    , ("M-S-l", sendMessage (IncMasterRows (-1)) >> sendMessage (IncMasterN (-1)))
-    , ("M-S-v", sendMessage (IncMasterCols 1))
-    , ("M-S-u", sendMessage (IncMasterCols (-1)))
+    , ("M-S-=",   sendMessage (IncMasterN 1))
+    , ("M--",     sendMessage (IncMasterN (-1)))
     -- Floating windows
     , ("M-S-<Left>",  withFocused $ snapMove   Dir2D.L Nothing)
     , ("M-S-<Right>", withFocused $ snapMove   Dir2D.R Nothing)
