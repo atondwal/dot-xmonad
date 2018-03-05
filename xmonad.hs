@@ -114,7 +114,7 @@ myXPKeymap           = myXPKeymap' `M.union` defaultXPKeymap
             , (xK_p, moveHistory W.focusDown')
             , (xK_n, moveHistory W.focusUp')
             ]
-myXPConfig = defaultXPConfig {
+myXPConfig = def {
         font          = "xft:Monospace:size=9",
         bgColor       = "#f8f8f8",
         fgColor       = "#383838",
@@ -127,7 +127,7 @@ myXPConfig = defaultXPConfig {
     }
   where
     millisecond = (* 1000)
-myTheme = defaultTheme {
+myTheme = def {
         fontName = "xft:M+ 1c:size=9",
         decoHeight = floor $ 22 * dpi / 96
     }
@@ -535,7 +535,7 @@ myStartupHook = do
 
 main = xmonad (ewmh $ docks myConfig)
 
-myConfig = defaultConfig {
+myConfig = def {
       -- simple stuff
         terminal           = myTerminal,
         focusFollowsMouse  = myFocusFollowsMouse,
