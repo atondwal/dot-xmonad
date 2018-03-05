@@ -97,11 +97,11 @@ myScreenOff          = "sleep 0.5; xset dpms force off"
 myScreenLock         = "slock" ++ " " ++ myScreenOff
 myFocusFollowsMouse  = False
 myClickJustFocuses   = False
-myBorderWidth        = 0
+myBorderWidth        = 4
 myModMask            = mod4Mask
 myWorkspaces         = []
-myNormalBorderColor  = "#000000"
-myFocusedBorderColor = "#272727"
+myNormalBorderColor  = "#313544"
+myFocusedBorderColor = "#f55c74"
 myXPKeymap           = myXPKeymap' `M.union` defaultXPKeymap
     where
         myXPKeymap' = M.fromList $
