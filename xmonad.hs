@@ -15,6 +15,7 @@ import           XMonad.Hooks.ManageDocks          hiding (Direction2D (..))
 import           XMonad.Hooks.ManageHelpers
 import           XMonad.Hooks.SetWMName
 
+import           XMonad.Layout.BoringWindows       (boringWindows)
 import           XMonad.Layout.Column
 import           XMonad.Layout.Fullscreen
 import           XMonad.Layout.GridVariants        hiding (Orientation (..))
@@ -22,8 +23,11 @@ import qualified XMonad.Layout.GridVariants        as Orientation (Orientation (
 import           XMonad.Layout.LayoutCombinators
 import           XMonad.Layout.LayoutHints
 import           XMonad.Layout.Maximize
+import           XMonad.Layout.Minimize            (minimize)
+import           XMonad.Layout.NoBorders           (smartBorders)
 import           XMonad.Layout.OneBig
 import           XMonad.Layout.Renamed
+import           XMonad.Layout.Simplest            (Simplest (..))
 import           XMonad.Layout.Spacing
 import           XMonad.Layout.Spiral
 import           XMonad.Layout.SubLayouts
@@ -441,16 +445,23 @@ myMouseBindings XConfig {XMonad.modMask = modm} = M.fromList
 ------------------------------------------------------------------------
 -- Layouts
 
-myLayoutHook = avoidStruts
+myLayoutHook = renamed [CutWordsLeft 6]
              . layoutHints
-             . maximize
-             . configurableNavigation noNavigateBorders
+             . fullscreenFloat
+             . fullscreenFocus
+             . avoidStruts
+             . addTabs shrinkText myTheme
              . subLayout [] subLayouts
              . spacingWithEdge 12
+             . smartBorders
+             . configurableNavigation noNavigateBorders
+             . maximize
+             . minimize
+             . boringWindows
              $ layouts
   where
      -- layouts
-     subLayouts = Mirror (Column 1.0) ||| Column 1.0 ||| tabbed shrinkText myTheme
+     subLayouts = Mirror (Column 1.0) ||| Column 1.0 ||| Simplest
      layouts =  renamed [Replace "OneBig"    ] (Mirror $ OneBig (3/5) (1/2))
             ||| renamed [Replace "Grid"      ] (Mirror $ SplitGrid Orientation.T 1 0 masterRatio (recip aspectRatio) resizeDelta)
             ||| renamed [Replace "ThreeCol"  ] (ThreeColMid nmaster resizeDelta (3/7))
