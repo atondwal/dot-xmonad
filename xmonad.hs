@@ -67,15 +67,6 @@ import           System.Process
 ------------------------------------------------------------------------
 -- Variables
 
-dpi :: Double
-dpi = unsafePerformIO $ read <$> do
-    mdpiStr <- lookup "DPI" <$> getEnvironment
-    case mdpiStr of
-        Just dpiStr -> return dpiStr
-        Nothing -> do
-            let commandLine = "xdpyinfo | sed -n '/resolution/ { s/^[^0-9]*\\([0-9]\\+\\)x.*$/\\1/; p; }'"
-            readCreateProcess (shell commandLine) ""
-
 myTerminal           = "~/.local/bin/st"
 myEditor             = "~/.local/bin/st -e nvim"
 mySecondEditor       = "emacsclient --alternate-editor='' --create-frame --no-wait"
@@ -120,6 +111,15 @@ myTheme = def {
     }
 
 sessionFile = "/home/yuta/.workspaces"
+
+dpi :: Double
+dpi = unsafePerformIO $ read <$> do
+    mdpiStr <- lookup "DPI" <$> getEnvironment
+    case mdpiStr of
+        Just dpiStr -> return dpiStr
+        Nothing -> do
+            let commandLine = "xdpyinfo | sed -n '/resolution/ { s/^[^0-9]*\\([0-9]\\+\\)x.*$/\\1/; p; }'"
+            readCreateProcess (shell commandLine) ""
 
 
 ------------------------------------------------------------------------
