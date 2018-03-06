@@ -109,8 +109,20 @@ myXPConfig = def {
   where
     millisecond = (* 1000)
 myTheme = def {
-        fontName = "xft:M+ 1c:size=9",
-        decoHeight = floor $ 22 * dpi / 96
+        activeColor = "#4c5165",
+        activeBorderColor = "#4c5165",
+        activeTextColor = "#ffffff",
+
+        inactiveColor = "#313544",
+        inactiveBorderColor = "#313544",
+        inactiveTextColor = "#a6a9b9",
+
+        urgentColor = "#aa586e",
+        urgentBorderColor = "#aa586e",
+        urgentTextColor = "#ffffff",
+
+        fontName = "xft:Roboto:size=9",
+        decoHeight = floor $ 20 * dpi / 96
     }
 
 sessionFile = "/home/yuta/.workspaces"
