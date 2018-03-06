@@ -167,7 +167,7 @@ myKeys conf = mkKeymap conf $
     , ("M-g",   windowPromptGoto      myXPConfig)
     , ("M-S-b", windowPromptBring     myXPConfig)
     , ("M-C-b", windowPromptBringCopy myXPConfig)
-    , ("M-c",   commandPrompt myXPConfig { font = "xft:Monospace:size=9" })
+    , ("M-c",   commandPrompt myXPConfig)
     -- Workspaces
     , ("M-a",   addWorkspacePrompt myXPConfig)
     , ("M-v",   selectWorkspace myXPConfig)
