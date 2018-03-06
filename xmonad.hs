@@ -484,6 +484,7 @@ myManageHook = composeAll
     , className  =? "Remote-viewer"      --> doFloat
     , className  =? "xfreerdp"           --> doFloat
     , className  =? "Stardict"           --> doFloat
+    , className  =? "Pinentry"           --> doFloat
     , appName    =? "crx_knipolnnllmklapflnccelgolnpehhpl" --> doFloat
     , windowRole =? "pop-up"             --> doFloat
     , minecraftWindow                    --> doFloat
