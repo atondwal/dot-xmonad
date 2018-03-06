@@ -69,7 +69,7 @@ import           System.Process
 
 myTerminal           = "~/.local/bin/st"
 myEditor             = "~/.local/bin/st -e nvim"
-mySecondEditor       = "emacsclient --alternate-editor='' --create-frame --no-wait"
+myAltEditor          = "emacsclient --alternate-editor='' --create-frame --no-wait"
 myBrowser            = "firefox"
 myAltBrowser         = "google-chrome-stable"
 myScreenOff          = "sleep 0.5; xset dpms force off"
@@ -131,7 +131,7 @@ myKeys conf = mkKeymap conf $
     -- Programs
     [ ("M-;",   spawn $ XMonad.terminal conf)
     , ("M-e",   spawn myEditor)
-    , ("M-S-e", spawn mySecondEditor)
+    , ("M-S-e", spawn myAltEditor)
     , ("M-C-S-e", startEmacsDaemonPrompt myXPConfig { autoComplete = Nothing })
     , ("M-w",   spawn myBrowser)
     , ("M-S-w", spawn myAltBrowser)
