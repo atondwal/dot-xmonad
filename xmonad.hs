@@ -386,7 +386,9 @@ saveWorkspaces :: X ()
 saveWorkspaces =
     withWindowSet $ \ws -> do
         io $ do
-            copyFile sessionFile (sessionFile ++ ".bak")
+            sessionFileExists <- doesFileExist sessionFile
+            when sessionFileExists $
+                copyFile sessionFile (sessionFile ++ ".bak")
             writeFile sessionFile $ unlines $ map W.tag $ W.workspaces ws
         spawn $ unwords [ "notify-send"
                         , "--icon=workspace-switcher"
