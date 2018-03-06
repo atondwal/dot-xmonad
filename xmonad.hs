@@ -81,17 +81,17 @@ myWorkspaces         = []
 myNormalBorderColor  = "#313544"
 myFocusedBorderColor = "#f55c74"
 myXPKeymap           = myXPKeymap' `M.union` defaultXPKeymap
-    where
-        myXPKeymap' = M.fromList $
-            map (first $ (,) controlMask)
-            [ (xK_m, setSuccess True >> setDone True)
-            , (xK_h, deleteString Prev)
-            , (xK_d, deleteString Next)
-            , (xK_b, moveCursor Prev)
-            , (xK_f, moveCursor Next)
-            , (xK_p, moveHistory W.focusDown')
-            , (xK_n, moveHistory W.focusUp')
-            ]
+  where
+    myXPKeymap' = M.fromList $
+        map (first $ (,) controlMask)
+        [ (xK_m, setSuccess True >> setDone True)
+        , (xK_h, deleteString Prev)
+        , (xK_d, deleteString Next)
+        , (xK_b, moveCursor Prev)
+        , (xK_f, moveCursor Next)
+        , (xK_p, moveHistory W.focusDown')
+        , (xK_n, moveHistory W.focusUp')
+        ]
 myXPConfig = def {
         font          = "xft:Monospace:size=9",
         bgColor       = "#f8f8f8",
