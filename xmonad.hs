@@ -123,7 +123,7 @@ myTheme = def {
         urgentBorderColor = "#aa586e",
         urgentTextColor = "#ffffff",
 
-        fontName = "xft:Roboto:size=9",
+        fontName = "xft:Source Han Sans:size=9",
         decoHeight = floor $ 20 * dpi / 96
     }
 
