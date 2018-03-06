@@ -80,7 +80,7 @@ myBorderWidth        = 4
 myModMask            = mod4Mask
 myWorkspaces         = []
 myNormalBorderColor  = "#313544"
-myFocusedBorderColor = "#f55c74"
+myFocusedBorderColor = "#aa586e"
 myXPKeymap           = myXPKeymap' `M.union` defaultXPKeymap
   where
     myXPKeymap' = M.fromList $
@@ -95,8 +95,10 @@ myXPKeymap           = myXPKeymap' `M.union` defaultXPKeymap
         ]
 myXPConfig = def {
         font          = "xft:Monospace:size=9",
-        bgColor       = "#f8f8f8",
-        fgColor       = "#383838",
+        bgColor       = "#313544",
+        fgColor       = "#a6a9b9",
+        bgHLight      = "#4c5165",
+        fgHLight      = "#ffffff",
         searchPredicate = \input candidate -> all (`isInfixOf` candidate) (words input),
         promptKeymap  = myXPKeymap,
         height        = floor $ 22 * dpi / 96,
