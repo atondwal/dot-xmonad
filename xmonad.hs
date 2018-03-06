@@ -50,6 +50,7 @@ import           Control.Exception                 as E
 import           Control.Monad
 import           Data.Char                         (toLower)
 import           Data.List
+import           Data.Maybe
 import qualified Data.Map                          as M
 import           Data.Word                         (Word32)
 import           Foreign.C.Error                   (Errno (..), ePIPE)
@@ -536,8 +537,32 @@ myLogHook = return ()
 
 myStartupHook = do
     setWMName "LG3D"
+    addEWMHFullscreen
     spawn "$HOME/.config/polybar/launch.sh"
     spawn "$HOME/dotfiles/launch-compton.sh"
+
+-- Followings are from:
+-- https://github.com/cstrahan/dotfiles/blob/b28910dca345f5030969828fae1fdbb9982e0042/.xmonad/xmonad.hs#L64-L82
+
+-- the sxiv app (and maybe others) believes that fullscreen is not supported,
+-- so this fixes that.
+-- see: https://mail.haskell.org/pipermail/xmonad/2017-March/015224.html
+-- and: https://github.com/xmonad/xmonad-contrib/pull/109
+addNETSupported :: Atom -> X ()
+addNETSupported x   = withDisplay $ \dpy -> do
+    r               <- asks theRoot
+    a_NET_SUPPORTED <- getAtom "_NET_SUPPORTED"
+    a               <- getAtom "ATOM"
+    liftIO $ do
+        sup <- (join . maybeToList) <$> getWindowProperty32 dpy a_NET_SUPPORTED r
+        when (fromIntegral x `notElem` sup) $
+          changeProperty32 dpy r a_NET_SUPPORTED a propModeAppend [fromIntegral x]
+
+addEWMHFullscreen :: X ()
+addEWMHFullscreen   = do
+    wms <- getAtom "_NET_WM_STATE"
+    wfs <- getAtom "_NET_WM_STATE_FULLSCREEN"
+    mapM_ addNETSupported [wms, wfs]
 
 
 ------------------------------------------------------------------------
