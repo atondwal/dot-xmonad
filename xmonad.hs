@@ -71,6 +71,7 @@ myTerminal           = "~/.local/bin/st"
 myEditor             = "~/.local/bin/st -e nvim"
 mySecondEditor       = "emacsclient --alternate-editor='' --create-frame --no-wait"
 myBrowser            = "firefox"
+myAltBrowser         = "google-chrome-stable"
 myScreenOff          = "sleep 0.5; xset dpms force off"
 myScreenLock         = "slock" ++ " " ++ myScreenOff
 myFocusFollowsMouse  = False
@@ -133,6 +134,7 @@ myKeys conf = mkKeymap conf $
     , ("M-S-e", spawn mySecondEditor)
     , ("M-C-S-e", startEmacsDaemonPrompt myXPConfig { autoComplete = Nothing })
     , ("M-w",   spawn myBrowser)
+    , ("M-S-w", spawn myAltBrowser)
     , ("M-C-x", spawn myScreenLock)
     , ("M-C-o", spawn myScreenOff)
     , ("M-<Print>", do
