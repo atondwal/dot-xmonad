@@ -23,8 +23,6 @@ import qualified XMonad.Layout.GridVariants        as Orientation (Orientation (
 import           XMonad.Layout.LayoutCombinators
 import           XMonad.Layout.LayoutHints
 import           XMonad.Layout.Maximize
-import           XMonad.Layout.Minimize            (minimize)
-import           XMonad.Layout.NoBorders           (smartBorders)
 import           XMonad.Layout.OneBig
 import           XMonad.Layout.Renamed
 import           XMonad.Layout.Simplest            (Simplest (..))
@@ -453,10 +451,8 @@ myLayoutHook = renamed [CutWordsLeft 6]
              . addTabs shrinkText myTheme
              . subLayout [] subLayouts
              . spacingWithEdge 12
-             . smartBorders
              . configurableNavigation noNavigateBorders
              . maximize
-             . minimize
              . boringWindows
              $ layouts
   where
