@@ -112,6 +112,7 @@ myTheme = def {
 
 sessionFile = "/home/yuta/.workspaces"
 
+{-# NOINLINE dpi #-}
 dpi :: Double
 dpi = unsafePerformIO $ read <$> do
     mdpiStr <- lookup "DPI" <$> getEnvironment
