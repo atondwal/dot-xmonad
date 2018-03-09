@@ -459,8 +459,8 @@ myLayoutHook = renamed [CutWordsLeft 6]
   where
      -- layouts
      subLayouts = Simplest ||| Mirror (Column 1.0) ||| Column 1.0
-     layouts =  renamed [Replace "OneBig"    ] (Mirror $ OneBig (3/5) (1/2))
-            ||| renamed [Replace "Grid"      ] (Mirror $ SplitGrid Orientation.T 1 0 masterRatio (recip aspectRatio) resizeDelta)
+     layouts =  renamed [Replace "Grid"      ] (Mirror $ SplitGrid Orientation.T 1 0 masterRatio (recip aspectRatio) resizeDelta)
+            ||| renamed [Replace "OneBig"    ] (Mirror $ OneBig (3/5) (1/2))
             ||| renamed [Replace "ThreeCol"  ] (ThreeColMid nmaster resizeDelta (3/7))
             ||| renamed [Replace "Tall"      ] (Tall nmaster resizeDelta masterRatio)
             ||| renamed [Replace "MirrorTall"] (Mirror $ Tall nmaster resizeDelta masterRatio)
@@ -472,8 +472,8 @@ myLayoutHook = renamed [CutWordsLeft 6]
      aspectRatio = 4/3   :: Rational
      resizeDelta = 3/100 :: Rational
 myLayoutNames =
-    [ "OneBig"
-    , "Grid"
+    [ "Grid"
+    , "OneBig"
     , "ThreeCol"
     , "Tall"
     , "MirrorTall"
