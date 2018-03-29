@@ -72,9 +72,7 @@ import           System.Process
 
 myTerminal           = "~/.local/bin/st"
 myEditor             = "~/.local/bin/st -e nvim"
-myAltEditor          = "emacsclient --alternate-editor='' --create-frame --no-wait"
 myBrowser            = "firefox"
-myAltBrowser         = "google-chrome-stable"
 myScreenOff          = "sleep 0.5; xset dpms force off"
 myScreenLock         = "slock" ++ " " ++ myScreenOff
 myFocusFollowsMouse  = False
@@ -148,10 +146,8 @@ myKeys conf = mkKeymap conf $
     -- Programs
     [ ("M-;",   spawn $ XMonad.terminal conf)
     , ("M-e",   spawn myEditor)
-    , ("M-S-e", spawn myAltEditor)
     , ("M-C-S-e", startEmacsDaemonPrompt myXPConfig { autoComplete = Nothing })
     , ("M-w",   spawn myBrowser)
-    , ("M-S-w", spawn myAltBrowser)
     , ("M-C-x", spawn myScreenLock)
     , ("M-C-o", spawn myScreenOff)
     , ("M-<Print>", do
@@ -178,14 +174,16 @@ myKeys conf = mkKeymap conf $
     , ("M-S-x", removeEmptyWorkspace)
     , ("M-m",   withWorkspace myXPConfig (windows . W.shift))
     , ("M-S-m",   withWorkspace myXPConfig { autoComplete = Nothing } (windows . W.shift))
+    , ("M-]",             findWorkspace getSortByTag Next HiddenNonEmptyWS 1 >>= windows . W.greedyView)
+    , ("M-[",             findWorkspace getSortByTag Prev HiddenNonEmptyWS 1 >>= windows . W.greedyView)
     , ("M-<Page_Down>",   findWorkspace getSortByTag Next HiddenNonEmptyWS 1 >>= windows . W.greedyView)
     , ("M-<Page_Up>",     findWorkspace getSortByTag Prev HiddenNonEmptyWS 1 >>= windows . W.greedyView)
     , ("M-C-<Page_Down>", findWorkspace getSortByTag Next (WSTagGroup '/') 1 >>= windows . W.greedyView)
     , ("M-C-<Page_Up>",   findWorkspace getSortByTag Prev (WSTagGroup '/') 1 >>= windows . W.greedyView)
     , ("M-S-<Page_Down>", findWorkspace getSortByTag Next AnyWS 1 >>= windows . W.greedyView)
     , ("M-S-<Page_Up>",   findWorkspace getSortByTag Prev AnyWS 1 >>= windows . W.greedyView)
-    -- , ("M-C-l", loadWorkspaces)
-    , ("M-C-s", saveWorkspaces)
+    , ("M-C-w l", loadWorkspaces)
+    , ("M-C-w s", saveWorkspaces)
     , ("M-s", onNextNeighbour W.view)
     , ("M-S-s", onNextNeighbour W.shift)
     -- Window manipulations
@@ -193,9 +191,6 @@ myKeys conf = mkKeymap conf $
     , ("M-C-S-c", killAllOtherCopies >> kill1)
     , ("M-t",   withFocused $ windows . W.sink)  -- Push window back into tiling
     , ("M-f",   withFocused (sendMessage . maximizeRestore))
-    , ("M-[",   withFocused $ fadeOut 0.1)
-    , ("M-]",   withFocused $ fadeIn 0.1)
-    , ("M-=",   withFocused $ setOpacity (0xfffffffe / 0xffffffff))
     -- Layout
     , ("M-b", sendMessage ToggleStruts)
     , ("M-<Space>", inputPromptWithCompl  myXPConfig "Layout" (mkComplFunFromListIgnoreCase' myLayoutNames) ?+ (sendMessage . JumpToLayout))
@@ -229,8 +224,8 @@ myKeys conf = mkKeymap conf $
     , ("M-.",   onGroup W.focusDown')
     , ("M-,",   onGroup W.focusUp')
     -- Master area
-    , ("M-C-n",   sendMessage Shrink)
-    , ("M-C-w",   sendMessage Expand)
+    , ("M-S-n",   sendMessage Shrink)
+    , ("M-S-w",   sendMessage Expand)
     , ("M-S-=",   sendMessage (IncMasterN 1))
     , ("M--",     sendMessage (IncMasterN (-1)))
     -- Floating windows
